@@ -10,20 +10,52 @@
 \begin{document}
 \maketitle
 
+
+
 \begin{abstract}
 The aim of this project is to determine the strengths and weaknesses of using passwords as a means of authentication, primarily for online accounts.
 The workings of various attacks against password-based systems will be detailed, and the methods to improve the resilience of these systems to these attacks also.
 \end{abstract}
+
+
 
 \section{Introduction}
 Passwords have been used to verify identity since ancient times (notably in the roman military, known as "watchwords"\cite{NEEDED}).
 In the modern world passwords are used primarily for login processes for computer devices and online services. 
 A typical computer user will use passwords for many different purposes ranging from accessing their computer to performing online bank transactions.
 Due to the high importance that the confidentiality, integrity and availability of our data is maintained, it is of great importance that the procedures we use to verify identity in order to allow access to our data are highly secure.
+This project will assess the role that passwords play in modern authentication, and the issues surrounding the use of passwords in this way, both the technical and human considerations.
+The primary issue with password-based authentication is that it relies on only one authentication factor; "Something the user knows", this can be problematic as knowledge factors can be obtained by attackers sometimes with ease compared to other factors, such as "Something the user has" or "Something the user is".
+The fact that password authentication relies only a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
+
 
 \section{Password protocols}
+\subsection{Introduction to password protocols}
+Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
+The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password {\it P}, usually set in advance, protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
+
+\subsection{A basic password protocol}
+In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password, either by comparing it directly to a stored plaintext password or applying some one-way hash function {\it H} first and comparing it to a stored hash. Since the users password is immediately exposed to eavesdropping/interception, this method is unacceptable in untrusted networks \cite{wu1998secure}.
+
+\subsection{An improved password protocol}
+To counter the possibility of interception, a challenge-response protocol can be employed. In general terms such a protocol would take the following form:
+\begin{enumerate}
+\item The user sends their identity to the server
+\item The server sends the user a random message, known as a challenge.
+\item The user performs some computation based on the challenge, the first random message, and their password. The user then sends this response to the server, which performs the same computation to verify the correctness of the users response.
+\end{enumerate}
+Since the servers challenge is unique for every authentication attempt, a captured response is useless for future sessions, defeating a simple replay attack \cite{wu1998secure}.
+
+\subsection{A secure password protocol}
+
+
 \section{Attacks}
+\subsection{The human vulnerabilities}
+
+
 \section{Defences}
+
+
 \section{Conclusion}
 
 \bibliographystyle{plain}
