@@ -1,4 +1,8 @@
 \documentclass[11pt]{article}
+\usepackage{ifthen}
+
+\let\oldcite=\cite
+\renewcommand\cite[1]{\ifthenelse{\equal{#1}{NEEDED}}{[citation~needed]}{\oldcite{#1}}}
 
 \title{How effective are passwords as a means of authentication, how can they be attacked and how can they be made more resilient to attack?}
 \author{Lucian James}
@@ -11,12 +15,17 @@ The aim of this project is to determine the strengths and weaknesses of using pa
 The workings of various attacks against password-based systems will be detailed, and the methods to improve the resilience of these systems to these attacks also.
 \end{abstract}
 
-\section{Cite testing}
-Secure remote password protocol\cite{wu1998secure}.
-Is this really you? Risk based authentication\cite{wiefling2019really}.
-Addressing misconceptions about password security\cite{mayer2018addressing}.
-Observing passwords in their natural habitat\cite{pearman2017let}.
-Password managers: attacks and defences\cite{silver2014password}.
+\section{Introduction}
+Passwords have been used to verify identity since ancient times (notably in the roman military, known as "watchwords"\cite{NEEDED}).
+In the modern world passwords are used primarily for login processes for computer devices and online services. 
+A typical computer user will use passwords for many different purposes ranging from accessing their computer to performing online bank transactions.
+Due to the high importance that the confidentiality, integrity and availability of our data is maintained, it is of great importance that the procedures we use to verify identity in order to allow access to our data are highly secure.
+
+\section{Password protocols}
+\section{Attacks}
+\section{Defences}
+\section{Conclusion}
+
 \bibliographystyle{plain}
 \bibliography{References}
 
