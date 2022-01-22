@@ -1,22 +1,36 @@
 This file is used to track changes in the planning of the project.
 
-##### 22/01/22 ##### 
+
+########## 22/01/22 ##########
 Began writing some stuff for intro + password protocols section, starting to plan the whole project now.
 There are currently 5 sections planned. Introduction, Password protocols, Attacks, Defences, And the conclusion.
 
 The current planned timescales are:
-Finish introduction section on: 5/2/22
-Finish password protocols section on: 19/2/22
-Finish analysis of password datasets on: 5/3/22
-Finish attacks section on: 19/3/22
-Finish defences section on: 2/4/22
-Finish conclusion on: 16/4/22
-9 days of extra time to fix any problems and give me some room if i go slow! :D
-Final submission due 25/4/22
+Introduction section {STARTED}
+>Start by:
+>Finish by: 5/2/22
+Password protocols section {STARTED}
+>Start by:
+>Finish by: 19/2/22
+Analysis of password datasets
+>start by:
+>Finish by: 5/3/22
+Attacks section
+>Start by:
+>Finish by: 19/3/22
+Defences section
+>Start by:
+>Finish by: 2/4/22
+Conclusion
+>Start by:
+>Finish by: 16/4/22
+
+9 days of extra time to fix any problems and give me some room if i go slow.
+The final submission is due 25/4/22
 
 Current timescales are pretty rough, and dont have any specific start dates.
 2 weeks per section/task should hopefully work out, ideally ill finish some things before the dates listed above.
 I will probably work on multiple sections at once when it makes sense (probably most of the time).
 Research will take place constantly throughout the production of the report.
 
-"Finishing" a section doesnt mean i wont change anything written in it later ;)
+"Finishing" a section doesnt mean i wont change anything written in it later.
