@@ -11,52 +11,83 @@
 \maketitle
 
 
-
 \begin{abstract}
 The aim of this project is to determine the strengths and weaknesses of using passwords as a means of authentication, primarily for online accounts.
-The workings of various attacks against password-based systems will be detailed, and the methods to improve the resilience of these systems to these attacks also.
+Protocols for password authentication will be introduced, at various levels of complexity and security.
+Attacks that can take place against these protocols will then be detailed, then the methods which can be used to secure systems against these attacks.
 \end{abstract}
 
 
-
-\section{Introduction}
-Passwords have been used to verify identity since ancient times (notably in the roman military, known as "watchwords"\cite{NEEDED}).
+\section{Introduction} \label{INTRO}
+Passwords have been used to verify identity since ancient times\cite{NEEDED}.
 In the modern world passwords are used primarily for login processes for computer devices and online services. 
 A typical computer user will use passwords for many different purposes ranging from accessing their computer to performing online bank transactions.
 Due to the high importance that the confidentiality, integrity and availability of our data is maintained, it is of great importance that the procedures we use to verify identity in order to allow access to our data are highly secure.
-This project will assess the role that passwords play in modern authentication, and the issues surrounding the use of passwords in this way, both the technical and human considerations.
+This project will assess the role that passwords play in modern authentication, and the issues surrounding the use of passwords, both the technical and human aspects will be considered.
 The primary issue with password-based authentication is that it relies on only one authentication factor; "Something the user knows", this can be problematic as knowledge factors can be obtained by attackers sometimes with ease compared to other factors, such as "Something the user has" or "Something the user is".
-The fact that password authentication relies only a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
+The fact that password authentication relies only on a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
+The primary cause of concern around the use of knowledge factors is that users may choose an easily guessed piece of knowledge, or fail to maintain the secrecy of the knowledge, which can cause great insecurity towards their accounts and thus their data.
+This project will focus primarily on authentication to online servers across a network assumed to be unsafe, but some mention of other use cases will (probably) be made.\\
+The contents of each section of this report are as follows:
+\begin{itemize}
+\item This section is section \ref{INTRO}.
+\item Section \ref{PP} will introduce protocols used to authenticate users, ranging from the very simplistic to much more advanced.
+\item Section \ref{ATK} will describe attacks of various levels of complexity which can be made to password-based authentication systems.
+\item Section \ref{DEF} will introduce measures which can be taken to protect systems against attacks described in section \ref{ATK}.
+\item Section \ref{CONCL} will conclude this report.
+\end{itemize}
 
 
-\section{Password protocols}
+\section{Password protocols} \label{PP}
 \subsection{Introduction to password protocols}
 Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
-The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password {\it P}, usually set in advance, protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
+The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password, usually set in advance. Protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
 
-\subsection{A basic password protocol}
-In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password, either by comparing it directly to a stored plaintext password or applying some one-way hash function {\it H} first and comparing it to a stored hash. Since the users password is immediately exposed to eavesdropping/interception, this method is unacceptable in untrusted networks \cite{wu1998secure}.
+\subsection{A basic password authentication protocol (PAP)}
+In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password, either by comparing it directly to a stored plaintext password or applying a one-way hash function to the received password and comparing it to a stored hash. Since the users plaintext password is immediately exposed to being intercepted, this method is unacceptable for use on untrusted networks.
+Such a protocol is described in IETF RFC1334 \cite{simpson1992pap}:
+\begin{quote}
+``The Password Authentication Protocol (PAP) provides a simple method for the peer to establish its identity using a 2-way handshake. 
+This is done only upon initial link establishment.\\
+After the Link Establishment phase is complete, an Id/Password pair is repeatedly sent by the peer to the authenticator until authentication is acknowledged or the connection is terminated.\\
+PAP is not a strong authentication method. 
+Passwords are sent over the circuit `in the clear', and there is no protection from playback''
+\end{quote}
 
-\subsection{An improved password protocol}
-To counter the possibility of interception, a challenge-response protocol can be employed. In general terms such a protocol would take the following form:
+\subsection{Challenge handshake authentication protocol (CHAP)}
+IETF RFC1994 \cite{simpson1996chap} details a protocol for authentication which provides protection against playback attacks, as the password is not communicated across the connection between the client and the server.
+The mechanism of the challenge handshake authentication protocol is described as so:
 \begin{enumerate}
-\item The user sends their identity to the server
-\item The server sends the user a random message, known as a challenge.
-\item The user performs some computation based on the challenge, the first random message, and their password. The user then sends this response to the server, which performs the same computation to verify the correctness of the users response.
+\item User sends their identity to the server.
+\item The server uses the identity received from the user to fetch the required information, such as its copy of the users password ($p_{server}$).
+\item The server sends the user a random message, known as a challenge ($c$).
+\item The user uses some hashing function ($h$) to generate a response ($r$) to the challenge, using their password ($p_{user}$) and the random message received from the server. $r = h(p_{user},c)$
+\item The user then sends $r$ to the server.
+\item The server makes a comparison, if $r = h(p_{server},c)$ then the user is authenticated, because $h(p_{user},c) = h(p_{server},c) \Longrightarrow p_{user} = p_{server}$.
+\item At random intervals after successful authentication has taken place, the server sends new challenges to the user, repeating the above steps.
 \end{enumerate}
-Since the servers challenge is unique for every authentication attempt, a captured response is useless for future sessions, defeating a simple replay attack \cite{wu1998secure}.
+Since $h(p_{user},c)$ is sent across the network in this verification process instead of the plaintext password and $c$ is unique for every authentication, interception is a less viable attack.
+Although if $r$ and $c$ are captured by an attacker and $h$ is a known function, the attacker can attempt to find the value of $p_{user}$ by calculating $h(x,c)$ and comparing it with $r$, where $x$ is an arbitrary guess at what the password could be.
+$$h(x,c)=r \Longrightarrow x = p_{user}$$
+The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$.\\
+Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
-\subsection{A secure password protocol}
-
-
-\section{Attacks}
-\subsection{The human vulnerabilities}
-
-
-\section{Defences}
+\subsection{Encrypted key exchange (EKE)}
 
 
-\section{Conclusion}
+
+\section{Attacks} \label{ATK}
+A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or quite often both.
+
+
+
+\section{Defences} \label{DEF}
+
+
+
+\section{Conclusion} \label{CONCL}
+
+
 
 \bibliographystyle{plain}
 \bibliography{References}
