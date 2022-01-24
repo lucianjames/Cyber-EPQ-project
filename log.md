@@ -26,7 +26,7 @@ The current planned timescales are:
   * Finish by: 16/4/22
 
 9 days of extra time to fix any problems and give me some room if i go slow.
-The final submission is due 25/4/22
+The final submission is due 25/4/22.
 
 Current timescales are pretty rough, and dont have any specific start dates.
 2 weeks per section/task should hopefully work out, ideally ill finish some things before the dates listed above.
@@ -37,8 +37,7 @@ Research will take place constantly throughout the production of the report.
 
 
 ## 23/01/22
-Did a bunch of stuff to the password protocols section
-Decided i may as well add some "start by" dates
+Did a bunch of stuff to the password protocols section, decided i may as well add some "start by" dates.
 
 The current planned timescales are:
 * Introduction section {STARTED}
@@ -64,13 +63,13 @@ Final submission 25/4/22
 
 Considering merging the "attacks" and "defences" section into one, something along the lines of "vulnerabilities and solutions".
 Each vulnerability can then be a subsection with two subsubsections, one describing the attack and the other describing the measures required to protect against the attack.
-Ill decide once i properly start that section of the project
+Ill decide once i properly start that section of the project.
 
 
 
 ## 24/01/22
 Had quick meeting with big eggleman, he clarified a couple things.
-Apparently the final submission date of 25/4/22 also needs all his marking done, so really the project needs to be done maybe a week before the 25th
+Apparently the final submission date of 25/4/22 also needs all his marking done, so really the project needs to be done maybe a week before the 25th.
 Changed intro section finish date.
 
 The current planned timescales are:
@@ -92,5 +91,3 @@ The current planned timescales are:
 * Conclusion
   * Start by: 2/4/22
   * Finish by: 16/4/22
-9 days extra time
-Final submission 25/4/22
