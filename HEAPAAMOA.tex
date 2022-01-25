@@ -39,7 +39,6 @@ The contents of each section of this report are as follows:
 
 
 \section{Password protocols} \label{PP}
-\subsection{Introduction to password protocols}
 Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
 The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password, usually set in advance. Protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
 
@@ -73,11 +72,13 @@ The process can be repeated as many times as required with different values of $
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
 \subsection{Encrypted key exchange (EKE)}
+Encrypted key exchange is a process where two parties establish a shared private key. Once this private key has been created it can be used for symmetric encryption of further communications, meaning a password (or other such values such as in CHAP) can be sent from the user to the server with no risk of the password being exposed to any third party that is intercepting communications between the user and the server.
 
+\subsubsection{DH-EKE}
 
 
 \section{Attacks} \label{ATK}
-A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or quite often both.
+A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
 
 
 
