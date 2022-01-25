@@ -31,7 +31,7 @@ This project will focus primarily on authentication to online servers across a n
 The contents of each section of this report are as follows:
 \begin{itemize}
 \item This section is section \ref{INTRO}.
-\item Section \ref{PP} will introduce protocols used to authenticate users, ranging from the very simplistic to much more advanced.
+\item Section \ref{PP} will introduce protocols used to authenticate users via the use of passwords, ranging from the very simplistic to much more advanced.
 \item Section \ref{ATK} will describe attacks of various levels of complexity which can be made to password-based authentication systems.
 \item Section \ref{DEF} will introduce measures which can be taken to protect systems against attacks described in section \ref{ATK}.
 \item Section \ref{CONCL} will conclude this report.
@@ -42,7 +42,7 @@ The contents of each section of this report are as follows:
 Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
 The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password, usually set in advance. Protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
 
-\subsection{A basic password authentication protocol (PAP)}
+\subsection{A basic password authentication protocol (PAP)} \label{PAP}
 In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password, either by comparing it directly to a stored plaintext password or applying a one-way hash function to the received password and comparing it to a stored hash. Since the users plaintext password is immediately exposed to being intercepted, this method is unacceptable for use on untrusted networks.
 Such a protocol is described in IETF RFC1334 \cite{simpson1992pap}:
 \begin{quote}
@@ -53,7 +53,7 @@ PAP is not a strong authentication method.
 Passwords are sent over the circuit `in the clear', and there is no protection from playback''
 \end{quote}
 
-\subsection{Challenge handshake authentication protocol (CHAP)}
+\subsection{Challenge handshake authentication protocol (CHAP)} \label{CHAP}
 IETF RFC1994 \cite{simpson1996chap} details a protocol for authentication which provides protection against playback attacks, as the password is not communicated across the connection between the client and the server.
 The mechanism of the challenge handshake authentication protocol is described as so:
 \begin{enumerate}
@@ -71,23 +71,21 @@ $$h(x,c)=r \Longrightarrow x = p_{user}$$
 The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$.\\
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
-\subsection{Encrypted key exchange (EKE)}
-Encrypted key exchange is a process where two parties establish a shared private key. Once this private key has been created it can be used for symmetric encryption of further communications, meaning a password (or other such values such as in CHAP) can be sent from the user to the server with no risk of the password being exposed to any third party that is intercepting communications between the user and the server.
-
-\subsubsection{DH-EKE}
+\subsection{Basic diffie-hellman key exchange} \label{BDHKE}
+\emph{Diffie-hellman key exchange is not in fact a password protocol}, but it is included in this section as it (or any other key exchange protocol) can be an incredibly important aspect of a password protocol (may be a component of protocols included in this section but i havent written about them yet).\\\\
+Key exchange is where two parties exchange or agree on a shared secret which can then be used to secure further communications cryptographically.
+Diffie-hellman key exchange is a method that two parties can use to securely establish a shared cryptographic key over an insecure network, which can be used to symmetrically encrypt data. The ability to establish a shared secret across an insecure network means that passwords and other such data which needs to be transmitted securely can indeed be transmitted.
+Having securely encrypted communications between the server and the client means that in theory, a very simplistic protocol such as PAP can be used without great concern for security.
 
 
 \section{Attacks} \label{ATK}
 A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
 
 
-
 \section{Defences} \label{DEF}
 
 
-
 \section{Conclusion} \label{CONCL}
-
 
 
 \bibliographystyle{plain}
