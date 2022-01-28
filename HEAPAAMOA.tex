@@ -71,11 +71,11 @@ $$h(x,c)=r \Longrightarrow x = p_{user}$$
 The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$.\\
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
-\subsection{Basic diffie-hellman key exchange} \label{BDHKE}
-\emph{Diffie-hellman key exchange is not in fact a password protocol}, but it is included in this section as it (or any other key exchange protocol) can be an incredibly important aspect of a password protocol (may be a component of protocols included in this section but i havent written about them yet).\\\\
-Key exchange is where two parties exchange or agree on a shared secret which can then be used to secure further communications cryptographically.
-Diffie-hellman key exchange is a method that two parties can use to securely establish a shared cryptographic key over an insecure network, which can be used to symmetrically encrypt data. The ability to establish a shared secret across an insecure network means that passwords and other such data which needs to be transmitted securely can indeed be transmitted.
-Having securely encrypted communications between the server and the client means that in theory, a very simplistic protocol such as PAP can be used without great concern for security.
+\subsection{Public key encryption}
+
+\subsection{Password authenticated key exchange (PAKE)}
+Password authenticated key exchange is where two (or more) parties, based only on their knowledge of a shared password, establish a cryptographic key.
+PAKE protocols are used when public key infrastructure is unavailable.
 
 
 \section{Attacks} \label{ATK}
