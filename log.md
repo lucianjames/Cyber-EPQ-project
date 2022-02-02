@@ -91,3 +91,29 @@ The current planned timescales are:
 * Conclusion
   * Start by: 2/4/22
   * Finish by: 16/4/22
+
+
+
+
+## 28/01/22
+Added hashcat to the plan.
+
+The current planned timescales are:
+* Introduction section {STARTED}
+  * Start by: asap
+  * Finish by: 16/4/22
+* Password protocols section {STARTED}
+  * Start by: 5/2/22
+  * Finish by: 19/2/22
+* Analysis of password datasets & hashcat stuff
+  * start by: 19/2/22
+  * Finish by: 5/3/22
+* Attacks section
+  * Start by: 5/3/22
+  * Finish by: 19/3/22
+* Defences section
+  * Start by: 19/3/22
+  * Finish by: 2/4/22
+* Conclusion
+  * Start by: 2/4/22
+  * Finish by: 16/4/22
