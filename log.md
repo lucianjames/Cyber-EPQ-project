@@ -18,10 +18,10 @@ The current planned timescales are:
 * Attacks section
   * Start by:
   * Finish by: 19/3/22
-*Defences section
+* Defences section
   * Start by:
   * Finish by: 2/4/22
-*Conclusion
+* Conclusion
   * Start by:
   * Finish by: 16/4/22
 
