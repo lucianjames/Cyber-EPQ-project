@@ -1,9 +1,9 @@
 
-HEAPAAMOA.log
-HEAPAAMOA.blg
-HEAPAAMOA.bbl
-HEAPAAMOA.aux
-HEAPAAMOA.pdf
-HEAPAAMOA.synctex.gz
-texput.log
-HEAPAAMOA.out
+*.log
+*.blg
+*.bbl
+*.aux
+*.pdf
+*.synctex.gz
+*.log
+*.out
