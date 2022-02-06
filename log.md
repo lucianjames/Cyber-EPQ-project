@@ -117,3 +117,33 @@ The current planned timescales are:
 * Conclusion
   * Start by: 2/4/22
   * Finish by: 16/4/22
+
+
+
+
+##  06/02/22
+Speedrunning finishing my planning review the day before its due
+
+* Introduction section will be written at the beginning of the project and then again at the end {STARTED}
+  * Finish by: 16/4/22
+* Password protocols section {STARTED}
+  * Finish by: 19/2/22
+* Analysis of password datasets & hashcat stuff
+  * Finish by: 5/3/22
+* Attacks section
+  * Finish by: 19/3/22
+* Presentation
+  * Will happen on: 28/3/22
+* Defences section
+  * Finish by: 2/4/22
+* Conclusion
+  * Finish by: 16/4/22
+* End of project review
+  * Do by: 18/4/22
+* Project hand in
+  * Hand in by: 18/4/22
+* Final submission to Qufaro
+  * Submit by: 25/4/22
+
+
+
