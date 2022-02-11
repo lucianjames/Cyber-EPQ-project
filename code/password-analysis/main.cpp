@@ -7,7 +7,6 @@
 #define maxlen 32
 
 std::string fixHex(std::string hexString){
-    std::cout << "BEFORE: " << hexString << std::endl;
     size_t len = hexString.length();
     std::string newString;
     for(int i=0; i<len; i+=2){
@@ -15,11 +14,11 @@ std::string fixHex(std::string hexString){
         char chr = (char)(int)strtol(byte.c_str(), nullptr, 16);
         newString.push_back(chr);
     }
-    std::cout << "AFTER: " << newString << std::endl;
     return newString;
 }
 
 bool checkAndFixHex(std::string& str){
+    // Some hex strings in one of the files seems to be marked with $HEX[(the string)], this should help fix strings from that specific file.
     if (str.rfind("$HEX[", 0) == 0) { // pos=0 limits the search to the prefix
         str.erase(0,5);
         str.pop_back();
@@ -70,11 +69,16 @@ int main(int argc, char** argv){
     }
     f.close();
 
+
+    // Display statistics to the terminal
     for(int i=0; i<maxlen; i++){
         std::cout << i << ": " << lengths[i] << std::endl;
     }
     std::cout << "Longer: " << veryLong << std::endl;
     std::cout << "Ignored: " << ignored << std::endl;
+
+
+    // Write statistics out to a file which can be loaded in python for graphing and further analysis
 
     return 0;
 }
