@@ -74,15 +74,24 @@ Another issue with CHAP is that passwords are stored as plaintext on the server,
 
 \subsection{Creating a secure channel across the insecure network}
 One option to ensure security of an authentication handshake is to encrypt all communications using some form of asymmetric cryptography.
-An example of a protocol which allows for this kind of encryption is TLS.
+An example of a protocol which allows for this kind of encryption is TLS, which is utilised by HTTPS.
+TLS/SSL is most likely the most commonly used method of securing communications, including of course communications during authentication.
+The downside to this approach is that it relies on public key infrastructure being in place and maintained, which can be expensive.
+TLS can also be vulnerable to man in the middle attacks \cite{NEEDED}.
 
 \subsection{Password authenticated key exchange (PAKE)}
 Password authenticated key exchange is where two (or more) parties, based only on their knowledge of a shared password, establish a cryptographic key.
-PAKE protocols are sometimes used when public key infrastructure is unavailable (digital certificates).
+PAKE protocols are sometimes used when public key infrastructure is unavailable or impractical (such as certificate authorities).
 
 
-\section{Attacks} \label{ATK}
+\section{Vulnerabilities} \label{ATK}
 A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
+\subsection{Human(user) vulnerabilities}
+\subsubsection{Weak passwords}
+\subsubsection{Phishing}
+\subsection{Technical vulnerabilities}
+\subsubsection{SQL injection}
+\subsubsection{MITM}
 
 
 \section{Defences} \label{DEF}
