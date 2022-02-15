@@ -39,6 +39,26 @@ bool check(std::string& str){
     return true;
 }
 
+template <typename T>
+void writeVarToFile(std::string filename, T x){
+    std::ofstream stream;
+    stream.open(filename);
+    stream << x;
+    stream.close();
+}
+
+template <typename T>
+void writeVectToFile(std::string filename, std::vector<T> x){
+    int xlen = x.length();
+    std::ofstream stream;
+    stream.open(filename);
+    for(int i=0; i<xlen-1; i++){
+        stream << x[i] << ",";
+    }
+    stream << x[xlen];
+    stream.close();
+}
+
 int main(int argc, char** argv){
     if(argc != 2){
         throw std::invalid_argument("Received invalid arguments");
@@ -46,7 +66,7 @@ int main(int argc, char** argv){
     std::string lineString;
     std::ifstream file(argv[1]);
     if (!file.is_open()){
-        std::cout << "Failed to open" << std::endl;
+        std::cout << "Failed to open file" << std::endl;
     }
 
     // These variables hold the statstics that we want to analyse.
@@ -70,30 +90,10 @@ int main(int argc, char** argv){
     }
     file.close();
 
-    // Display statistics to the terminal
-    for(int i=0; i<maxlen; i++){
-        std::cout << i << ": " << lengths[i] << std::endl;
-    }
-    std::cout << "Longer: " << aboveMaxLen << std::endl;
-    std::cout << "Ignored: " << ignored << std::endl;
-
     // Save statstics
-    // One file per statistic should make life easiest
-    std::ofstream statsOutput;
-    statsOutput.open("output/lengths");
-    for(int i=0; i<maxlen; i++){
-        statsOutput << lengths[i];
-        if(i != maxlen-1){
-            statsOutput << ",";
-        }
-    }
-    statsOutput.close();
-    statsOutput.open("output/aboveMaxLen");
-    statsOutput << aboveMaxLen;
-    statsOutput.close();
-    statsOutput.open("output/ignored");
-    statsOutput << ignored;
-    statsOutput.close();
+    writeVectToFile("output/lengths", lengths);
+    writeVarToFile("output/aboveMaxLen", aboveMaxLen);
+    writeVarToFile("output/ignored", ignored);
 
     return 0;
 }
