@@ -116,21 +116,24 @@ Authentication:
 \item The server generates a random number $b$, $1<b<n$, and computes its ephemeral public key $B=v+g^b$, and sends it back to the client, along with a randomly generated parameter $u$.
 \item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. if the clients password $P_2$ entered in step 2 matches the one originally used to generate $v$, then $S_1=S_2$.
 \begin{proof}
-$$S_2=(Av^u)^b$$
-$$=(g^a((g^{H(s,P_1)})^u))^b $$
-$$=(g^a(g^{u(H(s,P_1))}))^b$$
-$$=(g^{a+u(H(s,P_1))})^b$$
-$$=g^{b(a+u(H(s,P_1)))}$$
-$$=g^{ba+bu(H(S,P_1))}$$
-
-$$S_1=(B-g^{x_2})^{a+ux_2}$$
-$$=(g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}$$
-
-$$P_1=P_2 \Longrightarrow g^{H(s,P_1)}-g^{H(s,P_2)}=0$$ $$\therefore (g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}=(g^b)^{a+u(H(s,P_2))}$$
-
-$$=g^{b(a+u(H(S,P_2)))}$$
-$$=g^{ba+bu(H(S,P_2))}$$
-
+\begin{align*}
+S_2&=(Av^u)^b\\
+&=(g^a((g^{H(s,P_1)})^u))^b\\
+&=(g^a(g^{u(H(s,P_1))}))^b\\
+&=(g^{a+u(H(s,P_1))})^b\\
+&=g^{b(a+u(H(s,P_1)))}\\
+&=g^{ba+bu(H(S,P_1))}
+\end{align*}
+\begin{align*}
+S_1&=(B-g^{x_2})^{a+ux_2}\\
+&=(g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}
+\end{align*}
+\begin{align*}
+P_1=P_2 \Longrightarrow g^{H(s,P_1)}-g^{H(s,P_2)}=0\\
+\therefore (g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}&=(g^b)^{a+u(H(s,P_2))}\\
+&=g^{b(a+u(H(S,P_2)))}\\
+&=g^{ba+bu(H(S,P_2))}
+\end{align*}
 $$S_1=S_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \Longrightarrow P_1=P_2$$
 \end{proof}
 \item Both sides use some hash function $H$ to hash the exponential $S_n$ into a cryptographically strong session key $K_n=H(S_n)$.
