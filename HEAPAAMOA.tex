@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+\usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{ifthen}
 
 \let\oldcite=\cite
@@ -28,19 +30,12 @@ The primary issue with password-based authentication is that it relies on only o
 The fact that password authentication relies only on a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
 The primary cause of concern around the use of knowledge factors is that users may choose an easily guessed piece of knowledge, or fail to maintain the secrecy of the knowledge, which can cause great insecurity towards their accounts and thus their data.
 This project will focus primarily on authentication to online servers across a network assumed to be unsafe, but some mention of other use cases will (probably) be made.\\
-The contents of each section of this report are as follows:
-\begin{itemize}
-\item This section is section \ref{INTRO}.
-\item Section \ref{PP} will introduce protocols used to authenticate users via the use of passwords, ranging from the very simplistic to much more advanced.
-\item Section \ref{ATK} will describe attacks of various levels of complexity which can be made to password-based authentication systems.
-\item Section \ref{DEF} will introduce measures which can be taken to protect systems against attacks described in section \ref{ATK}.
-\item Section \ref{CONCL} will conclude this report.
-\end{itemize}
 
 
 \section{Password protocols} \label{PP}
 Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
 The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password, usually set in advance. Protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
+This section is important as developing an understanding of the various levels of security different protocols provide will be important for section \ref{VULN}.
 
 \subsection{A basic password authentication protocol (PAP)} \label{PAP}
 In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password either by comparing it directly to a stored plaintext password or applying a one-way hash function to the received password and comparing it to a stored hash. 
@@ -69,23 +64,96 @@ The mechanism of the challenge handshake authentication protocol is described as
 Since $h(p_{user},c)$ is sent across the network in this verification process instead of the plaintext password and $c$ is unique for every authentication, interception is a less viable attack.
 Although if $r$ and $c$ are captured by an attacker and $h$ is a known function, the attacker can attempt to find the value of $p_{user}$ by calculating $h(x,c)$ and comparing it with $r$, where $x$ is an arbitrary guess at what the password could be.
 $$h(x,c)=r \Longrightarrow x = p_{user}$$
-The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$.\\
+The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$. As passwords are often considered low-entropy secrets \cite{NEEDED}, the ability for an attacker to perform offline attacks in unacceptable.
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
-\subsection{Creating a secure channel across the insecure network}
+\subsection{General encryption protocols} \label{GEP}
 One option to ensure security of an authentication handshake is to encrypt all communications using some form of asymmetric cryptography.
-An example of a protocol which allows for this kind of encryption is TLS, which is utilised by HTTPS.
-TLS/SSL is most likely the most commonly used method of securing communications, including of course communications during authentication.
-The downside to this approach is that it relies on public key infrastructure being in place and maintained, which can be expensive.
-TLS can also be vulnerable to man in the middle attacks \cite{NEEDED}.
+An example of a protocol which allows for this kind of encryption is the Transport Layer Security (TLS) protocol, which is utilised by HTTPS.
+TLS is most likely the most commonly used method of securing communications, including of course communications during authentication.
+When all communications are encrypted very simplistic protocols such as PAP can be used, as interception is prevented by the encryption of the communications.\\\\
+The almost universal method of authentication utilises TLS for security, and can be outlined as so:
+\begin{enumerate}
+\item A client-to-server TLS channel is established.
+\item The client sends their identity and password $p_{user}$ through the TLS channel.
+\item The server runs the password received from the client through a hash function $h$. 
+\item The server compares $h(p_{user})$ with its stored hash of the correct password $h(p_{server})$. $$h(p_{user}) = h(p_{server}) \Longrightarrow p_{user} = p_{server}$$
+\end{enumerate}
+Using a secure communication protocol greatly reduces the need for a secure authentication protocol, but it does come with its disadvantages, these include:
+\begin{enumerate}
+\item The password appears in plaintext at the server during authentication. This can be a problem as this information could me mistakenly logged and stored on the server. This has occurred on the servers of even the biggest websites in the world (twitter and facebook accidentally logged passwords in plaintext) \cite{NEEDED}.
+\item Public-key infrastructure failures can occur which causes the security to be compromised, these can include:
+\begin{itemize}
+\item Theft of server private keys.
+\item Software that does not verify certificates correctly.
+\item Users that accept invalid or suspicious certificates.
+\item Certificates issued by rogue certificate authorities.
+\item Servers that share their TLS keys with others - e.g., CDN providers or security monitoring software.
+\item Information (including passwords) that traverses networks in plaintext form after TLS termination
+\item And more! :)
+\end{itemize}
+\end{enumerate}
+\cite{jarecki2018opaque}
 
-\subsection{Password authenticated key exchange (PAKE)}
-Password authenticated key exchange is where two (or more) parties, based only on their knowledge of a shared password, establish a cryptographic key.
-PAKE protocols are sometimes used when public key infrastructure is unavailable or impractical (such as certificate authorities).
+\subsection{Password-authenticated key exchange (PAKE)} \label{PAKE}
+Password-authenticated key exchange protocols provide a method for two parties to establish a shared key based on their shared knowledge of a secret password, in a way which is immune to offline attacks \cite{jarecki2018opaque}.
+PAKE can be used to provide secure authentication without the issues listed in section \ref{GEP}, as well as protection against other attacks such as man-in-the-middle attacks.
+
+\subsubsection{The secure remote password protocol} \label{SRP}
+A PAKE protocol of note is the `Secure Remote Password Protocol' (SRP), designed in 1998 \cite{wu1998secure}.
+The mechanism of the 1998 original version of the SRP protocol can be described as so:\\
+Password establishment:
+\begin{enumerate}
+\item To establish a password $P_1$ with the server, the client picks a random salt $s$ and computes $x_1=H(s,P_1)$, where $H$ is some hash function. As well as $v=g^{x_1}$, where $g$ is a primitive root modulo $n$ (often called a generator) where $n$ is a large prime number. The values $g$ and $n$ and well-known and agreed beforehand.
+\item The server then stores $v$ and $s$ as the clients password verifier and salt. $x_1$ is discarded because it is equivalent to the plaintext password $P$.
+\end{enumerate}
+Authentication:
+\begin{enumerate}
+\item The client sends the server its username.
+\item The server looks up the users password entry and fetches the users password verifier $v$ and the users salt $s$. The server sends $s$ to the client. The client then computes its long-term private key $x_2$ using $s$ and the password $P_2$. $x_2=H(s,P_2)$ where $H$ is some hash function.
+\item The client generates a random number $a$, $1<a<n$, and computes its ephemeral public key $A=g^a$, and sends it to the server.
+\item The server generates a random number $b$, $1<b<n$, and computes its ephemeral public key $B=v+g^b$, and sends it back to the client, along with a randomly generated parameter $u$.
+\item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. if the clients password $P_2$ entered in step 2 matches the one originally used to generate $v$, then $S_1=S_2$.
+\begin{proof}
+$$S_2=(g^a((g^{H(s,P_1)})^u))^b $$
+$$=(g^a(g^{u(H(s,P_1))}))^b$$
+$$=(g^{a+u(H(s,P_1))})^b$$
+$$=g^{b(a+u(H(s,P_1)))}$$
+$$=g^{ba+bu(H(S,P_1))}$$
+
+$$S_1=(g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}$$
+$$P_1=P_2 \Longrightarrow g^{H(s,P_1)}-g^{H(s,P_2)}=0 \therefore S_1=(g^b)^{a+u(H(s,P_2))}$$
+$$=g^{b(a+u(H(s,P_2)))}$$
+$$=g^{ba+bu(H(S,P_2))}$$
+
+$$S_1=S_2 \Longrightarrow (g^{H(s,P_1)}+g^b-g^{H(s,P_2)})^{a+u(H(s,P_2))}=(g^b)^{a+u(H(s,P_2))}$$
+$$S_1=S_2 \Longrightarrow g^{ba+bu(H(S,P_1))}=g^{ba+bu(H(S,P_2))} \Longrightarrow P_1=P_2$$
+\end{proof}
+\item Both sides use some hash function $H$ to hash the exponential $S_n$ into a cryptographically strong session key $K_n=H(S_n)$.
+\item The client uses some hash function $H$ to calculate $M_1=H(A,B,K_1)$.
+\item The client sends the server $M_1$ as evidence that it has the correct session key. The server then computes $M_1$ itself and verifies that it matches what the client sent.
+\item The server calculates $M_2=H(A,M_1,K_2)$.
+\item The server sends the client $M_2$ as evidence that it also has the correct session key, The user also verifies $M_2$ itself, accepting only if it matches the value the server provided.
+\end{enumerate}
+The SRP protocol has the following advantages:
+\begin{itemize}
+\item Unlike earlier PAKE protocols, it does not require the passwords to be stored on the server in plaintext, instead, the server stores a ``verifier'' which is a one-way function of the the password hash. This means that a breach of the database does not immediately allow an attacker to impersonate users, they must first perform expensive dictionary attacks to obtain the raw passwords. The technical name for this is asymmetric password-authenticated key exchange.
+\item Public-key infrastructure is not required.
+\item Despite drawbacks that it may have, the SRP protocol is simple, there is working code in OpenSSL that even integrates with TLS, which makes it relatively easy to adopt.
+\end{itemize}
+The SRP protocol has the following disadvantages:
+\begin{itemize}
+\item Earlier versions of the SRP protocol have been broken several times, which is why the protocol is currently on revision 6a. Additionally the ``security proof'' in the original paper doesnt really prove anything meaningful.
+\item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks.
+\end{itemize}
+\cite{green2018pake}
+
+\section{Password dataset and cracking analysis}
+Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
 
 
-\section{Vulnerabilities} \label{ATK}
-A variety of attacks can be performed to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
+\section{Vulnerabilities} \label{VULN}
+A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
 \subsection{Human(user) vulnerabilities}
 \subsubsection{Weak passwords}
 \subsubsection{Phishing}
@@ -94,7 +162,7 @@ A variety of attacks can be performed to gain unauthorised access to a system wh
 \subsubsection{MITM}
 
 
-\section{Defences} \label{DEF}
+\section{Solutions} \label{SOL}
 
 
 \section{Conclusion} \label{CONCL}
