@@ -179,8 +179,8 @@ $$H(P) \in \mathbb{Z} \bmod \mathbb{P}$$
 To compute this, PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `blinds' this password by selecting a random scalar value $r$, and blinding the result to obtain $C=H(P)^r$. At this point, the client can send the blinded value $C$ over the server, secure in the understanding that (in a prime-order group), the blinding by $r$ hides all partial information about $P$.\\\\
 The server, which has salt value $s$, now further exponentiates this value to obtain $R=C^s$ and sends $R$ back to the client. Written out in detail, the result can be expressed as $R=H(P)^{rs}$. The client now computes the inverse of its own blinding value $r$ and exponentiates one more time as follows: $R'=R^{r^-1}=H(P)^s$. This element $R'$, which consists of the hash of the password exponentiated by the salt, is the output of the desired PRF function.\\\\
 A nice feature of this protocol is that if the client enters the wrong password into the protocol, it should obtain a value which is very different from the actual value it wants. This guarantee comes from the fact the hash function is very likely to produce wildly different outputs for distinct passwords.\\\\
-\textbf{I think there might be some mistake in this relating to $R$, because:}
-$R=C^s=(H(P)^r)^s$, $s$ is supposed to be hidden from the client, but could they not figure it out by doing $s=log_CR$? Since $R$ and $C$ are known to the client. Probably something to do with cyclic groups that the blog post \cite{green2018pake} doesnt mention for some reason.
+\textbf{Technically, the salt can be found, but....}
+Something something discrete log problem. Calculating $log_CR$ is very hard given big numbers with the right features.
 
 \section{Password dataset and cracking analysis}
 Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
