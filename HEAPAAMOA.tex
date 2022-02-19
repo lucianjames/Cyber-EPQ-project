@@ -114,8 +114,8 @@ Authentication:
 \item The server looks up the users password entry and fetches the users password verifier $v$ and the users salt $s$. The server sends $s$ to the client. The client then computes its long-term private key $x_2$ using $s$ and the password $P_2$. $x_2=H(s,P_2)$ where $H$ is some hash function.
 \item The client generates a random number $a$, $1<a<n$, and computes its ephemeral public key $A=g^a$, and sends it to the server.
 \item The server generates a random number $b$, $1<b<n$, and computes its ephemeral public key $B=v+g^b$, and sends it back to the client, along with a randomly generated parameter $u$.
-\item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. if the clients password $P_2$ entered in step 2 matches the one originally used to generate $v$, then $S_1=S_2$.
-\begin{proof}
+\item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. If $S_1=S_2$, then $P_1=P_2$ therefore it is proven that the client knows the correct password.
+\begin{proof}[Proof $S_1=S_2 \Longrightarrow P_1=P_2$]
 \begin{align*}
 S_2&=(Av^u)^b\\
 &=(g^a((g^{H(s,P_1)})^u))^b\\
@@ -136,11 +136,11 @@ P_1=P_2 \Longrightarrow g^{H(s,P_1)}-g^{H(s,P_2)}=0\\
 \end{align*}
 $$S_1=S_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \Longrightarrow P_1=P_2$$
 \end{proof}
-\item Both sides use some hash function $H$ to hash the exponential $S_n$ into a cryptographically strong session key $K_n=H(S_n)$.
+\item Using some hash function $H$, the client computes $K_1=H(S_1)$ and the server computes $K_2=H(S_2)$. $K$ is a cryptographically strong session key.
 \item The client uses some hash function $H$ to calculate $M_1=H(A,B,K_1)$.
 \item The client sends the server $M_1$ as evidence that it has the correct session key. The server then computes $M_1$ itself and verifies that it matches what the client sent.
 \item The server calculates $M_2=H(A,M_1,K_2)$.
-\item The server sends the client $M_2$ as evidence that it also has the correct session key, The user also verifies $M_2$ itself, accepting only if it matches the value the server provided.
+\item The server sends the client $M_2$ as evidence that it also has the correct session key, The client also verifies $M_2$ itself, accepting only if it matches the value the server provided.
 \end{enumerate}
 The SRP protocol has the following advantages:
 \begin{itemize}
