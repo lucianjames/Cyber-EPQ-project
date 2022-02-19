@@ -101,7 +101,7 @@ Password-authenticated key exchange protocols provide a method for two parties t
 PAKE can be used to provide secure authentication without the issues listed in section \ref{GEP}, as well as protection against other attacks such as man-in-the-middle attacks.
 
 \subsubsection{The secure remote password protocol} \label{SRP}
-A PAKE protocol of note is the `Secure Remote Password Protocol' (SRP), designed in 1998 \cite{wu1998secure}.
+A PAKE protocol of note is the ``Secure Remote Password Protocol'' (SRP), designed in 1998 \cite{wu1998secure}.
 The mechanism of the 1998 original version of the SRP protocol can be described as so:\\
 Password establishment:
 \begin{enumerate}
@@ -153,11 +153,35 @@ The SRP protocol has the following advantages:
 The SRP protocol has the following disadvantages:
 \begin{itemize}
 \item Earlier versions of the SRP protocol have been broken several times, which is why the protocol is currently on revision 6a. Additionally the ``security proof'' in the original paper doesnt really prove anything meaningful.
-\item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks.
+\item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks. (DESCRIBE WHAT PRECOMPUTATION ATTACK IS)
 \end{itemize}
 \cite{green2018pake}
 
 \subsubsection{OPAQUE}
+A more recent PAKE protocol of note is ``OPAQUE'', which is an asymmetric PAKE protocol secure against pre-computation attacks \cite{jarecki2018opaque}.
+A description of the full mechanism of this protocol is out of the scope of this project (The paper is 61 pages long!), but the benefits which it offers over a protocol such as the SRP protocol can be described easily thanks to \cite{green2018pake}:
+\begin{itemize}
+\item OPAQUE does not reveal salts to potential attackers. This is done by combining the salt with the password, in a way which ensures the client does not learn the salt and the server does not learn the password.
+\item OPAQUE works with any password hashing function.
+\item All the hashing work is done on the client, which means OPAQUE can actually take load off the server.
+\item Unlike SRP, OPAQUE has a reasonable security proof.
+\end{itemize}
+\cite{green2018pake}
+
+\textbf{Details about salt secrecy (All from m.greens blog \cite{green2018pake}):}\\
+``The main problem with earlier PAKEs is the need to transmit the salt from a server to a (so far unauthenticated) client. This enables an attacker to run pre-computation attacks, where they can build an offline dictionary based on this salt.''\\\\
+``The challenge here is that the salt is typically fed into a hash function (like scrypt) along with the password. Intuitively someone has to compute that function. If it’s the server, then the server needs to see the password — which defeats the whole purpose. If it’s the client, then the client needs the salt.''\\\\
+``OPAQUE gets around this with the following clever trick. They leave the password hash on the client’s side, but they don’t feed it the stored salt. Instead, they use a special two-party protocol called an oblivious PRF to calculate a second salt (call it salt2) so that the client can use salt2 in the hash function — but does not learn the original salt.
+The basic idea of such a function is that the server and client can jointly compute a function PRF(salt, password), where the server knows `salt' and the client knows `password'. Only the client learns the output of this function. Neither party learns anything about the other party’s input.''
+
+The implementation of oblivious PRF relies on the idea that the client has the password $P$ and the server has the salt $s$.
+The output of the pRF function should be in the form $H(P)^s$ where $H$ is a special hash function that hashes passwords into elements of a cyclic (prime-order) group.
+
+To compute this, PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `binds' this password by selecting a random scalar value $r$, and binding the result to obtain $C=H(P)^r$. At this point, the client can send the binded value $C$ over the server, secure in the understanding that (in a prime-order group), the binding by $r$ hides all partial information about $P$.
+
+The server, which has salt value $s$, now further exponentiates this value to obtain $R=C^s$ and sends $R$ back to the client. Written out in detail, the result can be expressed as $R=H(P)^{rs}$. The client now computes the inverse of its own binding value $r$ and exponentiates one more time as follows: $R'=R^{r^-1}=H(P)^s$. This element $R'$, which consists of the hash of the password exponentiated by the salt, is the output of the desired PRF function.
+
+A nice feature of this protocol is that if the client enters the wrong password into the protocol, it should obtain a value which is very different from the actual value it wants. This guarantee comes from the fact the hash function is very likely to produce wildly different outputs for distinct passwords.
 
 
 \section{Password dataset and cracking analysis}
