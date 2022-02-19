@@ -69,7 +69,7 @@ The process can be repeated as many times as required with different values of $
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
 
 \subsection{General encryption protocols} \label{GEP}
-One option to ensure security of an authentication handshake is to encrypt all communications using some form of asymmetric cryptography.
+One option to ensure security of authentication is to encrypt all communications using some form of asymmetric encryption.
 An example of a protocol which allows for this kind of encryption is the Transport Layer Security (TLS) protocol, which is utilised by HTTPS.
 TLS is most likely the most commonly used method of securing communications, including of course communications during authentication.
 When all communications are encrypted very simplistic protocols such as PAP can be used, as interception is prevented by the encryption of the communications.\\\\
@@ -114,8 +114,9 @@ Authentication:
 \item The server looks up the users password entry and fetches the users password verifier $v$ and the users salt $s$. The server sends $s$ to the client. The client then computes its long-term private key $x_2$ using $s$ and the password $P_2$. $x_2=H(s,P_2)$ where $H$ is some hash function.
 \item The client generates a random number $a$, $1<a<n$, and computes its ephemeral public key $A=g^a$, and sends it to the server.
 \item The server generates a random number $b$, $1<b<n$, and computes its ephemeral public key $B=v+g^b$, and sends it back to the client, along with a randomly generated parameter $u$.
-\item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. If $S_1=S_2$, then $P_1=P_2$ therefore it is proven that the client knows the correct password.
-\begin{proof}[Proof $S_1=S_2 \Longrightarrow P_1=P_2$]
+\item The client computes $S_1=(B-g^{x_2})^{a+ux_2}$, and the server computes $S_2=(Av^u)^b$. 
+$P_1=P_2 \Longrightarrow S_1=S_2$, which means that if both the client and the server get the same value of $S$ then the client has the correct password.
+\begin{proof}[Proof $P_1=P_2 \Longrightarrow S_1=S_2$]
 \begin{align*}
 S_2&=(Av^u)^b\\
 &=(g^a((g^{H(s,P_1)})^u))^b\\
@@ -134,7 +135,7 @@ P_1=P_2 \Longrightarrow g^{H(s,P_1)}-g^{H(s,P_2)}=0\\
 &=g^{b(a+u(H(S,P_2)))}\\
 &=g^{ba+bu(H(S,P_2))}
 \end{align*}
-$$S_1=S_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \Longrightarrow P_1=P_2$$
+$$P_1=P_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \therefore S_1=S_2$$
 \end{proof}
 \item Using some hash function $H$, the client computes $K_1=H(S_1)$ and the server computes $K_2=H(S_2)$. $K$ is a cryptographically strong session key.
 \item The client uses some hash function $H$ to calculate $M_1=H(A,B,K_1)$.
@@ -144,6 +145,7 @@ $$S_1=S_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \Longrightarro
 \end{enumerate}
 The SRP protocol has the following advantages:
 \begin{itemize}
+\item If the hosts password file is captured and the intruder learns the value of $v$, it should still not allow the intruder to impersonate the user without an expensive dictionary search to find the value of $P_1$.
 \item Unlike earlier PAKE protocols, it does not require the passwords to be stored on the server in plaintext, instead, the server stores a ``verifier'' which is a one-way function of the the password hash. This means that a breach of the database does not immediately allow an attacker to impersonate users, they must first perform expensive dictionary attacks to obtain the raw passwords. The technical name for this is asymmetric password-authenticated key exchange.
 \item Public-key infrastructure is not required.
 \item Despite drawbacks that it may have, the SRP protocol is simple, there is working code in OpenSSL that even integrates with TLS, which makes it relatively easy to adopt.
@@ -154,6 +156,9 @@ The SRP protocol has the following disadvantages:
 \item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks.
 \end{itemize}
 \cite{green2018pake}
+
+\subsubsection{OPAQUE}
+
 
 \section{Password dataset and cracking analysis}
 Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
