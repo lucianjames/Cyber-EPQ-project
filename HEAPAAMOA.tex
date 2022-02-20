@@ -82,7 +82,7 @@ The almost universal method of authentication utilises TLS for security, and can
 \end{enumerate}
 Using a secure communication protocol greatly reduces the need for a secure authentication protocol, but it does come with its disadvantages, these include:
 \begin{enumerate}
-\item The password appears in plaintext at the server during authentication. This can be a problem as this information could me mistakenly logged and stored on the server. This has occurred on the servers of even the biggest websites in the world (twitter and facebook accidentally logged passwords in plaintext) \cite{NEEDED}.
+\item The password appears in plaintext at the server during authentication. This can be a problem as this information could me mistakenly logged and stored on the server. This has occurred on the servers of even the biggest websites in the world. It has been reported that both twitter\cite{heeti2018twitter} and facebook\cite{whittaker2019facebook} have mistakenly stored plaintext passwords in the past.
 \item Public-key infrastructure failures can occur which causes the security to be compromised, these can include:
 \begin{itemize}
 \item Theft of server private keys.
@@ -153,7 +153,7 @@ The SRP protocol has the following advantages:
 The SRP protocol has the following disadvantages:
 \begin{itemize}
 \item Earlier versions of the SRP protocol have been broken several times, which is why the protocol is currently on revision 6a. Additionally the ``security proof'' in the original paper doesnt really prove anything meaningful.
-\item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks. (DESCRIBE WHAT PRECOMPUTATION ATTACK IS)
+\item The SRP protocol leaks salt to unknown users by design, making it vulnerable to pre-computation attacks.%(DESCRIBE WHAT PRECOMPUTATION ATTACK IS)
 \end{itemize}
 \cite{green2018pake}
 
@@ -168,18 +168,21 @@ A description of the full mechanism of this protocol is out of the scope of this
 \end{itemize}
 \cite{green2018pake}
 
-\textbf{Details about salt secrecy (All from m.greens blog \cite{green2018pake}):}\\
+\begin{center}
+\textbf{Details about salt secrecy}\\
+\end{center}
 ``The main problem with earlier PAKEs is the need to transmit the salt from a server to a (so far unauthenticated) client. This enables an attacker to run pre-computation attacks, where they can build an offline dictionary based on this salt.''\\\\
 ``The challenge here is that the salt is typically fed into a hash function (like scrypt) along with the password. Intuitively someone has to compute that function. If it’s the server, then the server needs to see the password — which defeats the whole purpose. If it’s the client, then the client needs the salt.''\\\\
 ``OPAQUE gets around this with the following clever trick. They leave the password hash on the client’s side, but they don’t feed it the stored salt. Instead, they use a special two-party protocol called an oblivious PRF\footnote{Pseudo Random Function} to calculate a second salt (call it salt2) so that the client can use salt2 in the hash function — but does not learn the original salt.
-The basic idea of such a function is that the server and client can jointly compute a function PRF(salt, password), where the server knows `salt' and the client knows `password'. Only the client learns the output of this function. Neither party learns anything about the other party’s input.''\\\\
+The basic idea of such a function is that the server and client can jointly compute a function PRF(salt, password), where the server knows `salt' and the client knows `password'. Only the client learns the output of this function. Neither party learns anything about the other party’s input.''\cite{green2018pake}\\\\
 The implementation of oblivious PRF relies on the idea that the client has the password $P$ and the server has the salt $s$.
 The output of the PRF function should be in the form $H(P)^s$ where $H$ is a special hash function that hashes passwords into elements of a cyclic (prime-order) group.
 $$H(P) \in \mathbb{Z} \bmod \mathbb{P}$$
 To compute this, PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `blinds' this password by selecting a random scalar value $r$, and blinding the result to obtain $C=H(P)^r$. At this point, the client can send the blinded value $C$ over the server, secure in the understanding that (in a prime-order group), the blinding by $r$ hides all partial information about $P$.\\\\
 The server, which has salt value $s$, now further exponentiates this value to obtain $R=C^s$ and sends $R$ back to the client. Written out in detail, the result can be expressed as $R=H(P)^{rs}$. The client now computes the inverse of its own blinding value $r$ and exponentiates one more time as follows: $R'=R^{r^-1}=H(P)^s$. This element $R'$, which consists of the hash of the password exponentiated by the salt, is the output of the desired PRF function.\\\\
 A nice feature of this protocol is that if the client enters the wrong password into the protocol, it should obtain a value which is very different from the actual value it wants. This guarantee comes from the fact the hash function is very likely to produce wildly different outputs for distinct passwords.\\\\
-Theoretically, the salt can be found. The client knows the value of $R'$ which is equal to $H(P)^s$, and the value of $H(P)$, so theoretically it is possible to find the value of $s$ by computing $log_{H(S)}R'$. But this is only a theoretical possibility, as this calculation falls into the discrete logarithm problem, which is well known to be impossibly difficult to practically compute \cite{dong2016math}. The difficulty to compute this relies on the value produced by $H(P)$ being a very large prime number (usually 1024 bits or more) with a large prime factor.
+Theoretically, the salt can be found. The client knows the value of $R'$ which is equal to $H(P)^s$, and the value of $H(P)$, so theoretically it is possible to find the value of $s$ by computing $log_{H(S)}R'$. But this is only a theoretical possibility, as under the condition that the value produced by $H(P)$ is a very large prime number with a large prime factor this calculation falls into the discrete logarithm problem, which is well known to be impractical to compute \cite{dong2016math}. 
+
 
 \section{Password dataset and cracking analysis}
 Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
