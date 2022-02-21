@@ -21,6 +21,7 @@ Attacks that can take place against these protocols will then be detailed, then 
 \end{abstract}
 
 
+
 \section{Introduction} \label{INTRO}
 Passwords have been used to verify identity since ancient times\cite{NEEDED}.
 In the modern world passwords are used primarily for login processes for computer devices and online services. 
@@ -31,6 +32,7 @@ The primary issue with password-based authentication is that it relies on only o
 The fact that password authentication relies only on a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
 The primary cause of concern around the use of knowledge factors is that users may choose an easily guessed piece of knowledge, or fail to maintain the secrecy of the knowledge, which can cause great insecurity towards their accounts and thus their data.
 This project will focus primarily on authentication to online servers across a network assumed to be unsafe, but some mention of other use cases will (probably) be made.\\
+
 
 
 \section{Password protocols} \label{PP}
@@ -101,7 +103,7 @@ Password-authenticated key exchange protocols provide a method for two parties t
 PAKE can be used to provide secure authentication without the issues listed in section \ref{GEP}, as well as protection against other attacks such as man-in-the-middle attacks.
 
 \subsubsection{The secure remote password protocol} \label{SRP}
-A PAKE protocol of note is the ``Secure Remote Password Protocol'' (SRP), designed in 1998 \cite{wu1998secure}.
+A PAKE protocol of note is the ``Secure Remote Password Protocol'' (SRP protocol), designed in 1998 \cite{wu1998secure}.
 The mechanism of the 1998 original version of the SRP protocol can be described as so:\\
 Password establishment:
 \begin{enumerate}
@@ -184,8 +186,28 @@ A nice feature of this protocol is that if the client enters the wrong password 
 Theoretically, the salt can be found. The client knows the value of $R'$ which is equal to $H(P)^s$, and the value of $H(P)$, so theoretically it is possible to find the value of $s$ by computing $log_{H(S)}R'$. But this is only a theoretical possibility, as under the condition that the value produced by $H(P)$ is a very large prime number with a large prime factor this calculation falls into the discrete logarithm problem, which is well known to be impractical to compute \cite{dong2016math}. 
 
 
+
 \section{Password dataset and cracking analysis}
 Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
+\subsection{Datasets used}
+\begin{itemize}
+\item Top2Billion-probable-v2.txt
+\end{itemize}
+\subsection{Software used}
+\begin{itemize}
+\item C++
+\item Python (probably)
+\item Hashcat
+\end{itemize}
+\subsection{Hardware used}
+\begin{itemize}
+\item CPU: AMD Ryzen 5 2600
+\item RAM: 16GB
+\item GPU: Nvidia Quadro p5000
+\end{itemize}
+\subsection{Dataset analysis}
+\subsection{Password cracking analysis}
+
 
 
 \section{Vulnerabilities} \label{VULN}
