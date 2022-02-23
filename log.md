@@ -148,7 +148,7 @@ Speedrunning finishing my planning review the day before its due
 
 
 ## 23/02/22
-Renamed things, i think "Vulnerabilites" and "Solutions" is better than "Attacks" and "Defences"
+Renamed things, i think "Vulnerabilites" and "Mitigations" is better than "Attacks" and "Defences"
 Analysis is now specified to be its own section.
 
 * Introduction section will be written at the beginning of the project and then again at the end {STARTED} {50% COMPLETE}
