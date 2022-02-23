@@ -147,3 +147,27 @@ Speedrunning finishing my planning review the day before its due
 
 
 
+## 23/02/22
+Renamed things, i think "Vulnerabilites" and "Solutions" is better than "Attacks" and "Defences"
+Analysis is now specified to be its own section.
+
+* Introduction section will be written at the beginning of the project and then again at the end {STARTED} {50% COMPLETE}
+  * Finish by: 16/4/22
+* Password protocols section {STARTED} {90+% COMPLETE}
+  * Finish by: 19/2/22
+* Analysis of password datasets & hashcat stuff + writeup into its own section {STARTED}
+  * Finish by: 5/3/22
+* Vulnerabilities section
+  * Finish by: 19/3/22
+* Presentation
+  * Will happen on: 28/3/22
+* Solutions section
+  * Finish by: 2/4/22
+* Conclusion
+  * Finish by: 16/4/22
+* End of project review
+  * Do by: 18/4/22
+* Project hand in
+  * Hand in by: 18/4/22
+* Final submission to Qufaro
+  * Submit by: 25/4/22
