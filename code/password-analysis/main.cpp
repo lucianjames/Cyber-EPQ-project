@@ -113,30 +113,21 @@ int main(int argc, char** argv){
     // These variables hold the statstics that we want to analyse.
     std::vector<unsigned int> lengths;
     lengths.resize(maxlen); // Anything above "maxlen" characters will go in a seperate variable.
-
 	unsigned int n_up = 0; // only uppercase
 	unsigned int n_lw = 0; // only lowercase
 	unsigned int n_dg = 0; // only digits
 	unsigned int n_sp = 0; // only special
-	
 	unsigned int n_up_lw = 0; // uppercase + lowercase
 	unsigned int n_up_dg = 0; // uppercase + digits
 	unsigned int n_up_sp = 0; // uppercase + special
-
 	unsigned int n_lw_dg = 0; // lowercase + digits
 	unsigned int n_lw_sp = 0; // lowercase + special
-
 	unsigned int n_dg_sp = 0; // digits + special
-
 	unsigned int n_up_lw_dg = 0; // uppercase + lowercase + digits
 	unsigned int n_up_lw_sp = 0; // uppercase + lowercase + special
-
 	unsigned int n_lw_dg_sp = 0; // lowercase + digits + special
 	unsigned int n_up_dg_sp = 0; // uppercase + digits + special
-
 	unsigned int n_up_lw_dg_sp = 0; // uppercase + lowercase + digits + special
-
-    
     unsigned int aboveMaxLen = 0;
     unsigned int ignored = 0;
     
@@ -150,66 +141,50 @@ int main(int argc, char** argv){
             }else{
                 aboveMaxLen+=1;
             }
+            
+            // Character set shit
             bool lcu = containsUpper(lineString);
             bool lcl = containsLower(lineString);
             bool lcd = containsDigit(lineString);
             bool lcs = containsSpecial(lineString);
-
 			if(!(lcl || lcd || lcs)){n_up++;}
 			if(!(lcu || lcd || lcs)){n_lw++;}
 			if(!(lcu || lcl || lcs)){n_dg++;}
 			if(!(lcu || lcl || lcd)){n_sp++;}
-            
             if((lcl && lcu) && !(lcd || lcs)){n_up_lw++;}
             if((lcu && lcd) && !(lcl || lcs)){n_up_dg++;}
             if((lcu && lcs) && !(lcl || lcd)){n_up_sp++;}
-            
             if((lcl && lcd) && !(lcu || lcs)){n_lw_dg++;}
             if((lcl && lcs) && !(lcu || lcd)){n_lw_sp++;}
-            
             if((lcd && lcs) && !(lcu || lcl)){n_dg_sp++;}
-            
             if((lcu && lcl && lcd) && !lcs){n_up_lw_dg++;}
             if((lcu && lcl && lcs) && !lcd){n_up_lw_sp++;}
-
             if((lcl && lcd && lcs) && !lcu){n_lw_dg_sp++;}
             if((lcu && lcd && lcs) && !lcl){n_up_dg_sp++;}
-			
             if(lcu && lcl && lcs && lcd){n_up_lw_dg_sp++;}
-
-            
-            
         }else{
-            ignored+=1;
+            ignored+=1; // Ignore string if its a mess
         }
     }
     file.close();
 
     // Save statstics
     writeVectToFile("output/lengths", lengths);
-
 	writeVarToFile("output/n_up", n_up);
 	writeVarToFile("output/n_lw", n_lw);
 	writeVarToFile("output/n_dg", n_dg);
 	writeVarToFile("output/n_sp", n_sp);
-	
 	writeVarToFile("output/n_up_lw", n_up_lw);
 	writeVarToFile("output/n_up_dg", n_up_dg);
 	writeVarToFile("output/n_up_sp", n_up_sp);
-	
 	writeVarToFile("output/n_lw_dg", n_lw_dg);
 	writeVarToFile("output/n_lw_sp", n_lw_sp);
-	
 	writeVarToFile("output/n_dg_sp", n_dg_sp);
-
 	writeVarToFile("output/n_up_lw_dg", n_up_lw_dg);
 	writeVarToFile("output/n_up_lw_sp", n_up_lw_sp);
-
 	writeVarToFile("output/n_lw_dg_sp", n_lw_dg_sp);
 	writeVarToFile("output/n_up_dg_sp", n_up_dg_sp);
-
 	writeVarToFile("output/n_up_lw_dg_sp", n_up_lw_dg_sp);
-    
     writeVarToFile("output/aboveMaxLen", aboveMaxLen);
     writeVarToFile("output/ignored", ignored);
 
