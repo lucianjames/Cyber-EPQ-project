@@ -49,7 +49,7 @@ void writeVarToFile(std::string filename, T x){
 
 template <typename T>
 void writeVectToFile(std::string filename, std::vector<T> x){
-    int xlen = x.length();
+    int xlen = x.size();
     std::ofstream stream;
     stream.open(filename);
     for(int i=0; i<xlen-1; i++){
@@ -58,6 +58,47 @@ void writeVectToFile(std::string filename, std::vector<T> x){
     stream << x[xlen];
     stream.close();
 }
+
+bool containsUpper(const std::string x){
+	for(int i=0; i<x.length(); i++){
+		char c = x[i];
+		if(isupper(c)){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool containsLower(const std::string x){
+	for(int i=0; i<x.length(); i++){
+		char c = x[i];
+		if(islower(c)){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool containsDigit(const std::string x){
+	for(int i=0; i<x.length(); i++){
+		char c = x[i];
+		if(isdigit(c)){
+			return true;
+		}
+	}
+	return false;
+}
+
+bool containsSpecial(const std::string x){
+	for(int i=0; i<x.length(); i++){
+		char c = x[i];
+		if(!(isalpha(c) || isdigit(c))){
+			return true;
+		}
+	}
+	return false;
+}
+
 
 int main(int argc, char** argv){
     if(argc != 2){
@@ -72,18 +113,42 @@ int main(int argc, char** argv){
     // These variables hold the statstics that we want to analyse.
     std::vector<unsigned int> lengths;
     lengths.resize(maxlen); // Anything above "maxlen" characters will go in a seperate variable.
+	unsigned int nContainsUpper = 0;
+	unsigned int nContainsLower = 0;
+	unsigned int nContainsDigit = 0;
+	unsigned int nContainsSpecial = 0;
     unsigned int aboveMaxLen = 0;
     unsigned int ignored = 0;
-
+    
     // Main loop where the analysis of the file will take place
-    while (getline (file, lineString)) {
-        if(check(lineString)){
+    while (getline (file, lineString)) { 
+        if(check(lineString)){ // Check string isnt a mess
+        	// Line length
             int linelen = lineString.length();
             if (linelen < maxlen){
                 lengths[linelen]+=1;
             }else{
                 aboveMaxLen+=1;
             }
+            
+            // Contains uppercase
+            if(containsUpper(lineString)){
+            	nContainsUpper+=1;
+            }
+            // Contains lowercase
+            if(containsLower(lineString)){
+            	nContainsLower+=1;
+            }
+            // Contains numbers
+            if(containsDigit(lineString)){
+            	nContainsDigit+=1;
+            }
+            // Contains special
+            if(containsSpecial(lineString)){
+            	nContainsSpecial+=1;
+            }
+            
+            
         }else{
             ignored+=1;
         }
@@ -92,6 +157,10 @@ int main(int argc, char** argv){
 
     // Save statstics
     writeVectToFile("output/lengths", lengths);
+    writeVarToFile("output/containsUpper", nContainsUpper);
+    writeVarToFile("output/containsLower", nContainsLower);
+    writeVarToFile("output/containsDigit", nContainsDigit);
+    writeVarToFile("output/containsSpecial", nContainsSpecial);
     writeVarToFile("output/aboveMaxLen", aboveMaxLen);
     writeVarToFile("output/ignored", ignored);
 
