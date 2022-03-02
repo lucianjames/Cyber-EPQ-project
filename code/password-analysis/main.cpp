@@ -130,6 +130,7 @@ int main(int argc, char** argv){
 	unsigned int n_up_lw_dg_sp = 0; // uppercase + lowercase + digits + special
     unsigned int aboveMaxLen = 0;
     unsigned int ignored = 0;
+    unsigned int errors = 0;
     
     // Main loop where the analysis of the file will take place
     while (getline (file, lineString)) { 
@@ -148,20 +149,21 @@ int main(int argc, char** argv){
             bool lcd = containsDigit(lineString);
             bool lcs = containsSpecial(lineString);
 			if(!(lcl || lcd || lcs)){n_up++;}
-			if(!(lcu || lcd || lcs)){n_lw++;}
-			if(!(lcu || lcl || lcs)){n_dg++;}
-			if(!(lcu || lcl || lcd)){n_sp++;}
-            if((lcl && lcu) && !(lcd || lcs)){n_up_lw++;}
-            if((lcu && lcd) && !(lcl || lcs)){n_up_dg++;}
-            if((lcu && lcs) && !(lcl || lcd)){n_up_sp++;}
-            if((lcl && lcd) && !(lcu || lcs)){n_lw_dg++;}
-            if((lcl && lcs) && !(lcu || lcd)){n_lw_sp++;}
-            if((lcd && lcs) && !(lcu || lcl)){n_dg_sp++;}
-            if((lcu && lcl && lcd) && !lcs){n_up_lw_dg++;}
-            if((lcu && lcl && lcs) && !lcd){n_up_lw_sp++;}
-            if((lcl && lcd && lcs) && !lcu){n_lw_dg_sp++;}
-            if((lcu && lcd && lcs) && !lcl){n_up_dg_sp++;}
-            if(lcu && lcl && lcs && lcd){n_up_lw_dg_sp++;}
+			else if(!(lcu || lcd || lcs)){n_lw++;}
+			else if(!(lcu || lcl || lcs)){n_dg++;}
+			else if(!(lcu || lcl || lcd)){n_sp++;}
+            else if((lcl && lcu) && !(lcd || lcs)){n_up_lw++;}
+            else if((lcu && lcd) && !(lcl || lcs)){n_up_dg++;}
+            else if((lcu && lcs) && !(lcl || lcd)){n_up_sp++;}
+            else if((lcl && lcd) && !(lcu || lcs)){n_lw_dg++;}
+            else if((lcl && lcs) && !(lcu || lcd)){n_lw_sp++;}
+            else if((lcd && lcs) && !(lcu || lcl)){n_dg_sp++;}
+            else if((lcu && lcl && lcd) && !lcs){n_up_lw_dg++;}
+            else if((lcu && lcl && lcs) && !lcd){n_up_lw_sp++;}
+            else if((lcl && lcd && lcs) && !lcu){n_lw_dg_sp++;}
+            else if((lcu && lcd && lcs) && !lcl){n_up_dg_sp++;}
+            else if(lcu && lcl && lcs && lcd){n_up_lw_dg_sp++;}
+            else{errors++;}
         }else{
             ignored+=1; // Ignore string if its a mess
         }
