@@ -8,7 +8,7 @@
 #include "contains.h"
 #include "check.h"
 
-#define maxlen 32
+#define maxlen 25 // Anything more than 25 is rather likely to just be junk
 
 int main(int argc, char** argv){
     if(argc != 2){
