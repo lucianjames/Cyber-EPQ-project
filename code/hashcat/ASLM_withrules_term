@@ -1,0 +1,101 @@
+hashcat (v6.2.5) starting
+
+[33m* Device #1: WARNING! Kernel exec timeout is not disabled.[0m
+[33m             This may cause "CL_OUT_OF_RESOURCES" or related errors.[0m
+[33m             To disable the timeout, see: https://hashcat.net/q/timeoutpatch[0m
+[33m* Device #2: WARNING! Kernel exec timeout is not disabled.[0m
+[33m             This may cause "CL_OUT_OF_RESOURCES" or related errors.[0m
+[33m             To disable the timeout, see: https://hashcat.net/q/timeoutpatch[0m
+CUDA API (CUDA 11.6)
+====================
+* Device #1: Quadro P5000, 15707/16264 MB, 20MCU
+
+OpenCL API (OpenCL 3.0 CUDA 11.6.99) - Platform #1 [NVIDIA Corporation]
+=======================================================================
+* Device #2: Quadro P5000, skipped
+
+Minimum password length supported by kernel: 0
+Maximum password length supported by kernel: 256
+
+Counting lines in /home/lucian/Downloads/passwordStuff/pwned-passwords-ntlm_first1M_cleaned. Please be patient...[2KCounted lines in /home/lucian/Downloads/passwordStuff/pwned-passwords-ntlm_first1M_cleaned[2KParsing Hashes: 1/1000000 (0.00%)...[2KParsed Hashes: 1000000/1000000 (100.00%)[2KSorting hashes. Please be patient...[2KSorted hashes[2KRemoving duplicate hashes. Please be patient...[2KRemoved duplicate hashes[2KSorting salts. Please be patient...[2KSorted salts[2KGenerating bitmap tables...[2K[33mBitmap table overflowed at 18 bits.[0m
+[33mThis typically happens with too many hashes and reduces your performance.[0m
+[33mYou can increase the bitmap table size with --bitmap-max, but[0m
+[33mthis creates a trade-off between L2-cache and bitmap efficiency.[0m
+[33mIt is therefore not guaranteed to restore full performance.[0m
+[33m[0m
+Generated bitmap tables[2K[33mCannot convert rule for use on OpenCL device in file /home/lucian/Downloads/passwordStuff/rules1.txt on line 69: $1 $@ !#[0m
+[33mSkipping invalid or unsupported rule in file /home/lucian/Downloads/passwordStuff/rules1.txt on line 70: $! $@ 1#[0m
+[33mCannot convert rule for use on OpenCL device in file /home/lucian/Downloads/passwordStuff/rules1.txt on line 147: c $1 $@ !#[0m
+[33mSkipping invalid or unsupported rule in file /home/lucian/Downloads/passwordStuff/rules1.txt on line 148: c $! $@ 1#[0m
+Hashes: 1000000 digests; 1000000 unique digests, 1 unique salts
+Bitmaps: 18 bits, 262144 entries, 0x0003ffff mask, 1048576 bytes, 5/13 rotates
+Rules: 218
+
+Optimizers applied:
+* Zero-Byte
+* Early-Skip
+* Not-Salted
+* Not-Iterated
+* Single-Salt
+* Raw-Hash
+
+[33mATTENTION! Pure (unoptimized) backend kernels selected.[0m
+[33mPure kernels can crack longer passwords, but drastically reduce performance.[0m
+[33mIf you want to switch to optimized kernels, append -O to your commandline.[0m
+[33mSee the above message to find out about the exact limits.[0m
+[33m[0m
+Watchdog: Temperature abort trigger set to 90c
+
+Initializing device kernels and memory. Please be patient...[2KInitializing backend runtime for device #1. Please be patient...[2KInitialized backend runtime for device #1[2KHost memory required for this attack: 351 MB
+
+Initialized device kernels and memory[2KStarting self-test. Please be patient...[2KFinished self-test[2KDictionary cache hit:
+* Filename..: /home/lucian/Downloads/passwordStuff/ASLM.txt
+* Passwords.: 41591035
+* Bytes.....: 503094044
+* Keyspace..: 9066845630
+
+Starting autotune. Please be patient...[2KFinished autotune[2K                                                          [s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           [33mCracking performance lower than expected?[0m
+[33m[0m
+[33m* Append -O to the commandline.[0m
+[33m  This lowers the maximum supported password/salt length (usually down to 32).[0m
+[33m[0m
+[33m* Append -w 3 to the commandline.[0m
+[33m  This can cause your screen to lag.[0m
+[33m[0m
+[33m* Append -S to the commandline.[0m
+[33m  This has a drastic speed impact but can be better for specific attacks.[0m
+[33m  Typical scenarios are a small wordlist but a large ruleset.[0m
+[33m[0m
+[33m* Update your backend API runtime / driver the right way:[0m
+[33m  https://hashcat.net/faq/wrongdriver[0m
+[33m[0m
+[33m* Create more work items to make use of your parallelization power:[0m
+[33m  https://hashcat.net/faq/morework[0m
+[33m[0m
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           [33mApproaching final keyspace - workload adjusted.[0m
+[33m[0m
+[s]tatus [p]ause [b]ypass [c]heckpoint [f]inish [q]uit =>                                                           
+Session..........: hashcat
+Status...........: Exhausted
+Hash.Mode........: 1000 (NTLM)
+Hash.Target......: /home/lucian/Downloads/passwordStuff/pwned-passwords-ntlm_first1M_cleaned
+Time.Started.....: Fri Mar  4 19:47:09 2022 (27 secs)
+Time.Estimated...: Fri Mar  4 19:47:36 2022 (0 secs)
+Kernel.Feature...: Pure Kernel
+Guess.Base.......: File (/home/lucian/Downloads/passwordStuff/ASLM.txt)
+Guess.Mod........: Rules (/home/lucian/Downloads/passwordStuff/rules1.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:   336.5 MH/s (8.27ms) @ Accel:128 Loops:54 Thr:64 Vec:1
+Recovered........: 150402/1000000 (15.04%) Digests
+Remaining........: 849598 (84.96%) Digests
+Recovered/Time...: CUR:N/A,N/A,N/A AVG:N/A,N/A,N/A (Min,Hour,Day)
+Progress.........: 9066845630/9066845630 (100.00%)
+Rejected.........: 0/9066845630 (0.00%)
+Restore.Point....: 41591035/41591035 (100.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:216-218 Iteration:0-54
+Candidate.Engine.: Device Generator
+Candidates.#1....: $HEX[30303038333132373138] -> $HEX[1e1e]
+Hardware.Mon.#1..: Temp: 59c Fan: 38% Util: 52% Core:1733MHz Mem:4513MHz Bus:16
+
+Started: Fri Mar  4 19:47:08 2022
+[2KStopped: Fri Mar  4 19:47:37 2022
