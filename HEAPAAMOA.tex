@@ -49,7 +49,7 @@ Such a protocol is described in IETF RFC1334 \cite{simpson1992pap}:
 This is done only upon initial link establishment.\\
 After the Link Establishment phase is complete, an Id/Password pair is repeatedly sent by the peer to the authenticator until authentication is acknowledged or the connection is terminated.\\
 PAP is not a strong authentication method. 
-Passwords are sent over the circuit `in the clear', and there is no protection from playback''
+Passwords are sent over the circuit `in the clear', and there is no protection from playback or repeated trial and error attacks. The peer is in control of the frequency and timing of the attempts''
 \end{quote}
 
 \subsection{Challenge handshake authentication protocol (CHAP)} \label{CHAP}
@@ -206,6 +206,8 @@ Sourced from weakpass.
 \item \textbf{pwned-passwords-ntlm-ordered-by-hash-v7}\\
 20.6gb file containing 613584246 NTLM hashes of ``passwords'', along with the frequency that they are found in ``data breaches''.\\
 Sourced from haveibeenpwned.
+\item \textbf{Rules1.txt}\\
+Not sure where I got this from, it is a set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
 \end{itemize}
 \subsection{Software used}
 \begin{itemize}
@@ -220,15 +222,43 @@ Sourced from haveibeenpwned.
 \item GPU: Nvidia Quadro P5000
 \end{itemize}
 \subsection{Dataset analysis}
+Comparison with \cite{pearman2017let}!!
 
 \subsection{Password cracking analysis}
+Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
+This analysis will focus on dictionary attacks, with and without modification rules.
+A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
+Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.
 
+
+\subsubsection{Top2Billion-probable}
+\textbf{Without rules}\\
+245137/1000000 (24.51\%)\\
+\textbf{With rules}\\
+369683/1000000 (36.97\%)
+\subsubsection{hk-hlm}
+\textbf{Without rules}\\
+28399/1000000 (2.84\%)\\
+\textbf{With rules}\\
+99867/1000000 (9.99\%)
+\subsubsection{wp-3p}
+\textbf{Without rules}\\
+55876/1000000 (85.59\%)\\
+\textbf{With rules}\\
+863702/1000000 (86.37\%)
 
 
 \section{Vulnerabilities} \label{VULN}
 A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
 \subsection{Human(user) vulnerabilities}
 \subsubsection{Weak passwords}
+One of the major problems with password-based authentication systems is that users are often quite lazy with their choice of passwords.
+Choosing easily guessed passwords and re-using passwords are incredibly common.
+This is often due to the large amount of misconceptions that users may have about password security.
+something something \cite{mayer2018addressing}.
+
+
+
 \subsubsection{Phishing}
 \subsection{Technical vulnerabilities}
 \subsubsection{SQL injection}
