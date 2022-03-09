@@ -24,3 +24,8 @@ hashcat --potfile-disable -m 1000 $hashes $path/weakpass_3p -r $rules -o wp_3p_w
 hashcat --potfile-disable -m 1000 $hashes $path/ASLM.txt -o ASLM_norules | tee ASLM_norules_term
 # ASLM with rules
 hashcat --potfile-disable -m 1000 $hashes $path/ASLM.txt -r $rules -o ASLM_withrules | tee ASLM_withrules_term
+
+# cyclone.hashesorg.hashkiller.combined.txt no rules
+hashcat --potfile-disable -m 1000 $hashes $path/cyclone.hashesorg.hashkiller.combined.txt -o CHHC_norules | tee CHHC_norules_term
+# cyclone.hashesorg.hashkiller.combined.txt with rules
+hashcat --potfile-disable -m 1000 $hashes $path/cyclone.hashesorg.hashkiller.combined.txt -r $rules -o CHHC_withrules | tee CHHC_withrules_term
