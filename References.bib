@@ -6,6 +6,7 @@
   pages={97--111},
   year={1998},
   organization={Citeseer}
+  evaluation={This paper provided me with the information I needed to detail how the secure remote password protocol worked. There were some aspects I did not like about this paper though, such as the confusing use of some symbols (some symbols were used to represent two things at once!), and the use of names to represent the client and the server. I changed these things when I wrote about how the SRP protocol works.}
 }
 @inproceedings{wiefling2019really,
   title={Is this really you? An empirical study on risk-based authentication applied in the wild},
@@ -13,33 +14,38 @@
   booktitle={IFIP International Conference on ICT Systems Security and Privacy Protection},
   pages={134--148},
   year={2019},
-  organization={Springer}
+  organization={Springer},
+  evaluation={not used yet, and not properly evaluated}
 }
 @inproceedings{mayer2018addressing,
   title={Addressing misconceptions about password security effectively},
   author={Mayer, Peter and Volkamer, Melanie},
   booktitle={Proceedings of the 7th Workshop on Socio-Technical Aspects in Security and Trust},
   pages={16--27},
-  year={2018}
+  year={2018},
+  evaluation={not used yet, but i most likely will as it seems to contain lots of relevant information}
 }
 @inproceedings{pearman2017let,
   title={Let's go in for a closer look: Observing passwords in their natural habitat},
   author={Pearman, Sarah and Thomas, Jeremy and Naeini, Pardis Emami and Habib, Hana and Bauer, Lujo and Christin, Nicolas and Cranor, Lorrie Faith and Egelman, Serge and Forget, Alain},
   booktitle={Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security},
   pages={295--310},
-  year={2017}
+  year={2017},
+  evaluation={not used yet, but will soon}
 }
 @inproceedings{silver2014password,
   title={Password managers: Attacks and defenses},
   author={Silver, David and Jana, Suman and Boneh, Dan and Chen, Eric and Jackson, Collin},
   booktitle={23rd $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 14)},
   pages={449--464},
-  year={2014}
+  year={2014},
+  evaluation={not used yet}
 }
 @article{bellovin1992encrypted,
   title={Encrypted key exchange: Password-based protocols secure against dictionary attacks},
   author={Bellovin, Steven Michael and Merritt, Michael},
-  year={1992}
+  year={1992},
+  evaluation={Didnt use in the end.}
 }
 @misc{simpson1996chap, 
 	title={PPP Challenge Handshake Authentication Protocol (CHAP)}, 
@@ -47,7 +53,8 @@
 	journal={IETF}, 
 	author={Simpson, William Allen}, 
 	year={1996}, 
-	month={Aug}
+	month={Aug},
+	evaluation={This RFC provided me with the information i needed about CHAP, although i did expand my explanation of the steps of the protocol a bit}
 } 
 @misc{simpson1992pap,
 	title={PPP Authentication Protocols}, 
@@ -55,7 +62,8 @@
 	journal={IETF}, 
 	author={Simpson, William Allen}, 
 	year={1992}, 
-	month={Oct}
+	month={Oct},
+	evaluation={This RFC provided me with the information i needed about PAP, i didnt need to use the majority of the information on this RFC, all i quoted was a part of a section.}
 }
 @article{diffie1976new,
   title={New directions in cryptography},
@@ -65,7 +73,8 @@
   number={6},
   pages={644--654},
   year={1976},
-  publisher={IEEE}
+  publisher={IEEE},
+  evaluation={Interesting, but didnt use it in the end.}
 }
 @inproceedings{hao2008password,
   title={Password authenticated key exchange by juggling},
@@ -73,7 +82,8 @@
   booktitle={International Workshop on Security Protocols},
   pages={159--171},
   year={2008},
-  organization={Springer}
+  organization={Springer},
+  evaluation={Decent source, but didnt use it in the end.}
 }
 @inproceedings{jarecki2018opaque,
   title={OPAQUE: an asymmetric PAKE protocol secure against pre-computation attacks},
@@ -81,28 +91,32 @@
   booktitle={Annual International Conference on the Theory and Applications of Cryptographic Techniques},
   pages={456--486},
   year={2018},
-  organization={Springer}
+  organization={Springer},
+  evaluation={Too technical for me to utilise properly, relied mostly on green2018pake for OPAQUE stuff, but its good to cite the original paper too.}
 }
 @misc{green2018pake, 
   title={Let’s talk about PAKE}, 
   url={https://blog.cryptographyengineering.com/2018/10/19/lets-talk-about-pake/}, 
   author={Green, Matthew}, 
   year={2018}, 
-  month={Oct}
+  month={Oct},
+  evaluation={This blog post was incredibly useful for my section on PAKE, it did have some issues such as a lack of exact detailing of why salts are protected using OPAQUE (i had to figure this out for myself, had to research discrete log problem a bit)}
 }
 @misc{dong2016math,
   title={Math in network security: A crash course},
   author={Dong, Changyu},
-  year={2016}
+  year={2016},
+  evaluation={Used this source to quickly learn about the discrete log problem, which i needed to describe salt secrecy in OPAQUE}
 }
-@misc{heeti2018twitter, 
+@misc{heeti2018twitter,
   title={Twitter advises all users to change passwords after glitch exposed some in plain text}, 
   url={https://www.cnet.com/tech/tech-industry/twitter-advises-all-users-to-change-passwords-after-glitch-that-exposed-some-in-plain-text/}, 
   journal={CNET}, 
   publisher={CNET}, 
   author={Al-Heeti, Abrar}, 
   year={2018}, 
-  month={May}
+  month={May},
+  evaluation={Good source on twitter accidentally storing passwords in plaintext}
 }
 @misc{whittaker2019facebook, 
   title={Facebook admits it stored 'hundreds of millions' of account passwords in plaintext}, 
@@ -111,5 +125,6 @@
   publisher={TechCrunch}, 
   author={Whittaker, Zack}, 
   year={2019}, 
-  month={Mar}
+  month={Mar},
+  evaluation={Good source on facebook accidentally storing a lot of passwords in plaintext}
 } 
