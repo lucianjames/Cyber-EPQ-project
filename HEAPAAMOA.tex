@@ -203,6 +203,7 @@ Sourced from weakpass.
 \item \textbf{weakpass-3p}\\
 14.5gb file containing 1454086314 ``passwords'', the file appears to be sorted alphabetically. fair amount of gibberish.\\
 Sourced from weakpass.
+\item \textbf{ASLM}\\
 \item \textbf{pwned-passwords-ntlm-ordered-by-hash-v7}\\
 20.6gb file containing 613584246 NTLM hashes of ``passwords'', along with the frequency that they are found in ``data breaches''.\\
 Sourced from haveibeenpwned.
@@ -246,7 +247,18 @@ Modification rules can be used to augment a password dictionary by doing simple 
 55876/1000000 (85.59\%)\\
 \textbf{With rules}\\
 863702/1000000 (86.37\%)
-
+\subsubsection{ASLM}
+\textbf{Without rules}\\
+52045/1000000 (5.20\%)\\
+\textbf{With rules}\\
+150402/1000000 (15.04\%)
+\subsubsection{CHHC}
+\textbf{Without rules}\\
+934087/1000000 (93.41\%)\\
+\textbf{With rules}\\
+934344/1000000 (93.43\%)\\
+This indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
+This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets i am using.
 
 \section{Vulnerabilities} \label{VULN}
 A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
