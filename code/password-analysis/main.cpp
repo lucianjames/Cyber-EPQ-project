@@ -3,10 +3,12 @@
 #include <stdexcept>
 #include <vector>
 #include <algorithm>
+#include <filesystem>
 
 #include "varToFile.h"
 #include "contains.h"
 #include "check.h"
+#include "nchar.h"
 
 #define maxlen 25 // Anything more than 25 is rather likely to just be junk
 
@@ -41,12 +43,18 @@ int main(int argc, char** argv){
     unsigned int aboveMaxLen = 0;
     unsigned int ignored = 0;
     unsigned int errors = 0;
+    unsigned long long int totalLength = 0;
+    unsigned long long int totalUpper = 0;
+    unsigned long long int totalLower = 0;
+    unsigned long long int totalDigit = 0;
+    unsigned long long int totalSpecial = 0;
     
     // Main loop where the analysis of the file will take place
     while (getline (file, lineString)) { 
         if(check(lineString)){ // Check string isnt a mess
             // Line length
             int linelen = lineString.length();
+            totalLength += linelen;
             if (linelen < maxlen){
                 lengths[linelen]+=1;
             }else{
@@ -58,6 +66,12 @@ int main(int argc, char** argv){
             bool lcl = containsLower(lineString);
             bool lcd = containsDigit(lineString);
             bool lcs = containsSpecial(lineString);
+
+            if(lcu){ totalUpper += nUpper(lineString); }
+            if(lcl){ totalLower += nLower(lineString); }
+            if(lcd){ totalDigit += nDigit(lineString); }
+            if(lcs){ totalSpecial += nSpecial(lineString); }
+
             if(!(lcl || lcd || lcs)){n_up++;}
             else if(!(lcu || lcd || lcs)){n_lw++;}
             else if(!(lcu || lcl || lcs)){n_dg++;}
@@ -81,6 +95,9 @@ int main(int argc, char** argv){
     file.close();
 
     // Save statstics
+    if (!std::filesystem::is_directory("output") || !std::filesystem::exists("output")){
+        std::filesystem::create_directory("output");
+    }
     writeVectToFile("output/lengths", lengths);
     writeVarToFile("output/n_up", n_up);
     writeVarToFile("output/n_lw", n_lw);
@@ -99,6 +116,11 @@ int main(int argc, char** argv){
     writeVarToFile("output/n_up_lw_dg_sp", n_up_lw_dg_sp);
     writeVarToFile("output/aboveMaxLen", aboveMaxLen);
     writeVarToFile("output/ignored", ignored);
+    writeVarToFile("output/totalLength", totalLength);
+    writeVarToFile("output/totalUpper", totalUpper);
+    writeVarToFile("output/totalLower", totalLower);
+    writeVarToFile("output/totalDigit", totalDigit);
+    writeVarToFile("output/totalSpecial", totalSpecial);
 
     return 0;
 }

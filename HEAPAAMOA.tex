@@ -12,8 +12,6 @@
 
 \begin{document}
 \maketitle
-
-
 \begin{abstract}
 The aim of this project is to determine the strengths and weaknesses of using passwords as a means of authentication, primarily for online accounts.
 Protocols for password authentication will be introduced, at various levels of complexity and security.
@@ -189,7 +187,7 @@ Theoretically, the salt can be found. The client knows the value of $R'$ which i
 
 \section{Password dataset and cracking analysis}
 Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
-\subsection{Datasets used}
+\subsection{Datasets used} \label{datasets}
 \begin{itemize}
 \item \textbf{Top2Billion-probable-v2}\\
 20.6gb file containing 1973218846 ``passwords'', they are ordered in the file starting with the most common to the least common. All items in this dataset are sourced from other datasets.\\
@@ -208,7 +206,8 @@ Sourced from weakpass.
 20.6gb file containing 613584246 NTLM hashes of ``passwords'', along with the frequency that they are found in ``data breaches''.\\
 Sourced from haveibeenpwned.
 \item \textbf{Rules1.txt}\\
-Not sure where I got this from, it is a set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
+A set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
+Sourced from weakpass with minor modification.
 \end{itemize}
 \subsection{Software used}
 \begin{itemize}
@@ -223,26 +222,90 @@ Not sure where I got this from, it is a set of rules for use during rule-based p
 \item GPU: Nvidia Quadro P5000
 \end{itemize}
 \subsection{Dataset analysis}
-Comparison with \cite{pearman2017let}!!
+\cite{pearman2017let} contains information about 4057 passwords (1522 unique) from 154 participants across 2077 web domains.
+This paper provides a reliable real-world analysis to compare the password dictionaries I have collected to.
+The characteristics of the data collected for this paper are as follows:
+\begin{quote}
+``On average, participants submitted a password 1.40 times per day. Including all passwords, participants had an average password length of 9.92 characters with their average password composed from 2.77 character classes including 2.70 digits, 5.91 lowercase letters, 0.84 uppercase letters, and 0.46 special characters.''
+\end{quote}
+Making a comparison between this information, and a similar analysis of the password dictionaries listed in \ref{datasets} makes it possible to determine how realistic these dictionaries are.
+
+\subsubsection{Top2Billion-probable}
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item Average length $\approx$ 10.01
+\item Average number of uppercase characters $\approx$ 0.969
+\item Average number of lowercase characters $\approx$ 5.8
+\item Average number of digits $\approx$ 3.14
+\item Average number of special characters $\approx$ 0.174
+\end{itemize}
+\subsubsection{hk-hlm-founds}
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item Average length $\approx$ 9.56
+\item Average number of uppercase characters $\approx$ 0.715
+\item Average number of lowercase characters $\approx$ 5.49
+\item Average number of digits $\approx$ 3.26
+\item Average number of special characters $\approx$ 0.386
+\end{itemize}
+\subsubsection{cyclone.hashesorg.hashkiller.combined}
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item Average length $\approx$ 9.84
+\item Average number of uppercase characters $\approx$ 0.677
+\item Average number of lowercase characters $\approx$ 5.58
+\item Average number of digits $\approx$ 3.41
+\item Average number of special characters $\approx$ 0.597
+\end{itemize}
+\subsubsection{weakpass-3p}
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item Average length $\approx$ 9.69
+\item Average number of uppercase characters $\approx$ 0.769
+\item Average number of lowercase characters $\approx$ 5.57
+\item Average number of digits $\approx$ 3.35
+\item Average number of special characters = 0.00
+\end{itemize}
+\subsubsection{ASLM}
+\begin{itemize}
+\setlength\itemsep{-.5em}
+\item Average length $\approx$ 11.1
+\item Average number of uppercase characters $\approx$ 0.230
+\item Average number of lowercase characters $\approx$ 5.47
+\item Average number of digits $\approx$ 4.34
+\item Average number of special characters $\approx$ 5.40
+\end{itemize}
 
 \subsection{Password cracking analysis}
 Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
 This analysis will focus on dictionary attacks, with and without modification rules.
 A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
-Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.
-
-
+Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.\\\\
+Time taken is not considered in this analysis, as it varies greatly with the hardware being used, and the hashing algorithm used.
+Instead, this analysis focuses on the number of passwords cracked from a set of hashes.\\\\
+For this analysis, the ``rules'' file consisted of 229 rules which perform simple modifications to every item in the input password dictionary, these modifications include, among others:
+\begin{itemize}
+\item Capitalising the first letter of passwords
+\item Appending numbers which represent ``years'' to the end of passwords
+\item Appending recent years to the end of passwords
+\item Appending special chars
+\end{itemize}
 \subsubsection{Top2Billion-probable}
 \textbf{Without rules}\\
 245137/1000000 (24.51\%)\\
 \textbf{With rules}\\
 369683/1000000 (36.97\%)
-\subsubsection{hk-hlm}
+\subsubsection{hk-hlm-founds}
 \textbf{Without rules}\\
 28399/1000000 (2.84\%)\\
 \textbf{With rules}\\
 99867/1000000 (9.99\%)
-\subsubsection{wp-3p}
+\subsubsection{cyclone.hashesorg.hashkiller.combined}
+\textbf{Without rules}\\
+934087/1000000 (93.41\%)\\
+\textbf{With rules}\\
+934344/1000000 (93.43\%)\\
+\subsubsection{weakpass-3p}
 \textbf{Without rules}\\
 55876/1000000 (85.59\%)\\
 \textbf{With rules}\\
@@ -252,13 +315,12 @@ Modification rules can be used to augment a password dictionary by doing simple 
 52045/1000000 (5.20\%)\\
 \textbf{With rules}\\
 150402/1000000 (15.04\%)
-\subsubsection{CHHC}
-\textbf{Without rules}\\
-934087/1000000 (93.41\%)\\
-\textbf{With rules}\\
-934344/1000000 (93.43\%)\\
-This indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
+\subsubsection{Password cracking analysis conclusion}
+The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
 This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets i am using.
+Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
+If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
+
 
 \section{Vulnerabilities} \label{VULN}
 A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
