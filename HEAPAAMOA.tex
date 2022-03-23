@@ -4,6 +4,9 @@
 \usepackage{amssymb}
 \usepackage{ifthen}
 
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
 \let\oldcite=\cite
 \renewcommand\cite[1]{\ifthenelse{\equal{#1}{NEEDED}}{[citation~needed]}{\oldcite{#1}}}
 
@@ -277,12 +280,15 @@ Interestingly, this dictionary contains no special characters at all, whoever ma
 \item Average number of special characters $\approx$ 5.40
 \end{itemize}
 \subsection{Password cracking analysis}
+
+\subsection{Introduction}
 Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
 This analysis will focus on dictionary attacks, with and without modification rules.
 A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
-Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.\\\\
+The ``correct'' password is the password which when sent through some hashing algorithm, produces an identical hash to the one which we are trying to decrypt.\\\\
 Time taken is not considered in this analysis, as it varies greatly with the hardware being used, and the hashing algorithm used.
 Instead, this analysis focuses on the number of passwords cracked from a set of hashes.\\\\
+Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.
 For this analysis, the ``rules'' file consisted of 229 rules which perform simple modifications to every item in the input password dictionary, these modifications include, among others:
 \begin{itemize}
 \item Capitalising the first letter of passwords
@@ -290,34 +296,49 @@ For this analysis, the ``rules'' file consisted of 229 rules which perform simpl
 \item Appending recent years to the end of passwords
 \item Appending special chars
 \end{itemize}
+For my experiment, I produced a simple shell script to run over all my datasets. This script is pictured below.
+\begin{center}
+\makebox[\textwidth]{\includegraphics[width=\textwidth]{hashcatScript}}
+\end{center}
+
+\subsubsection{Results}
 Below is how many hashes each dictionary managed to crack out of the first 1 million hashes in pwned-passwords-ntlm-ordered-by-hash-v7.
-\subsubsection{Top2Billion-probable}
-\textbf{Without rules}\\
-245137/1000000 (24.51\%)\\
-\textbf{With rules}\\
-369683/1000000 (36.97\%)
-\subsubsection{hk-hlm-founds}
-\textbf{Without rules}\\
-28399/1000000 (2.84\%)\\
-\textbf{With rules}\\
-99867/1000000 (9.99\%)
-\subsubsection{cyclone.hashesorg.hashkiller.combined}
-\textbf{Without rules}\\
-934087/1000000 (93.41\%)\\
-\textbf{With rules}\\
-934344/1000000 (93.43\%)\\
-\subsubsection{weakpass-3p}
-\textbf{Without rules}\\
-55876/1000000 (85.59\%)\\
-\textbf{With rules}\\
-863702/1000000 (86.37\%)
-\subsubsection{ASLM}
-\textbf{Without rules}\\
-52045/1000000 (5.20\%)\\
-\textbf{With rules}\\
-150402/1000000 (15.04\%)
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{10cm}|p{3cm}|p{2cm}|}
+ \hline
+ Dataset & Raw & Percent \\ [0.5ex] 
+ \hline\hline
+ Top2Billion-probable without rules & 245137/1000000 & 24.51\%\\
+ \hline 
+ Top2Billion-probable with rules & 369683/1000000 & 36.97\%\\
+ \hline\hline
+ hk-hlm-founds without rules & 28399/1000000 & 2.84\%\\
+ \hline
+ hk-hlm-founds with rules & 99867/1000000 & 9.99\%\\
+ \hline\hline
+ cyclone.hashesorg.hashkiller.combined without rules & 934087/1000000 & 93.41\%\\
+ \hline
+ cyclone.hashesorg.hashkiller.combined with rules & 934344/1000000 & 93.43\%\\
+ \hline\hline
+ weakpass-3p without rules & 55876/1000000 & 85.59\%\\
+ \hline
+ weakpass-3p with rules & 863702/1000000 & 86.37\%\\
+ \hline\hline
+ ASLM without rules & 52045/1000000 & 5.20\%\\
+ \hline
+ ASLM with rules & 150402/1000000 & 15.04\%\\
+ \hline
+\end{tabular}
+}
+\end{center}
+
 \subsubsection{Password cracking analysis conclusion}
 The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
+Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the :, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
+\begin{center}
+\makebox[\textwidth]{\includegraphics[width=10cm]{junkData}}
+\end{center}
 This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets I am using.
 Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
 If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
