@@ -233,52 +233,27 @@ The characteristics of the data collected for this paper are as follows:
 ``On average, participants submitted a password 1.40 times per day. Including all passwords, participants had an average password length of 9.92 characters with their average password composed from 2.77 character classes including 2.70 digits, 5.91 lowercase letters, 0.84 uppercase letters, and 0.46 special characters.''
 \end{quote}
 Making a comparison between this information, and a similar analysis of the password dictionaries listed in \ref{datasets} provides some indication of how realistic these dictionaries are.
-\subsubsection{Top2Billion-probable}
-\begin{itemize}
-\setlength\itemsep{-.5em}
-\item Average length $\approx$ 10.01
-\item Average number of uppercase characters $\approx$ 0.969
-\item Average number of lowercase characters $\approx$ 5.8
-\item Average number of digits $\approx$ 3.14
-\item Average number of special characters $\approx$ 0.174
-\end{itemize}
-\subsubsection{hk-hlm-founds}
-\begin{itemize}
-\setlength\itemsep{-.5em}
-\item Average length $\approx$ 9.56
-\item Average number of uppercase characters $\approx$ 0.715
-\item Average number of lowercase characters $\approx$ 5.49
-\item Average number of digits $\approx$ 3.26
-\item Average number of special characters $\approx$ 0.386
-\end{itemize}
-\subsubsection{cyclone.hashesorg.hashkiller.combined}
-\begin{itemize}
-\setlength\itemsep{-.5em}
-\item Average length $\approx$ 9.84
-\item Average number of uppercase characters $\approx$ 0.677
-\item Average number of lowercase characters $\approx$ 5.58
-\item Average number of digits $\approx$ 3.41
-\item Average number of special characters $\approx$ 0.597
-\end{itemize}
-\subsubsection{weakpass-3p}
-\begin{itemize}
-\setlength\itemsep{-.5em}
-\item Average length $\approx$ 9.69
-\item Average number of uppercase characters $\approx$ 0.769
-\item Average number of lowercase characters $\approx$ 5.57
-\item Average number of digits $\approx$ 3.35
-\item Average number of special characters = 0.00
-\end{itemize}
-Interestingly, this dictionary contains no special characters at all, whoever made it must have chosen to exclude any entries that contain special characters for some reason.
-\subsubsection{ASLM}
-\begin{itemize}
-\setlength\itemsep{-.5em}
-\item Average length $\approx$ 11.1
-\item Average number of uppercase characters $\approx$ 0.230
-\item Average number of lowercase characters $\approx$ 5.47
-\item Average number of digits $\approx$ 4.34
-\item Average number of special characters $\approx$ 5.40
-\end{itemize}
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{5cm}|p{2cm}|p{3cm}|p{3cm}|p{2cm}|p{3cm}|}
+ \hline
+ Dataset & Avg length & Avg n uppercase & Avg n lowercase & Avg n digits & Avg n special \\ [0.5ex] 
+ \hline\hline
+ Top2Billion-probable & 10.01 & 0.969 & 5.8 & 3.14 & 0.174 \\
+ \hline
+ hk-hlm-founds & 9.56 & 0.715 & 5.49 & 3.26 & 0.386 \\
+ \hline
+ CHHC & 9.84 & 0.677 & 5.58 & 3.41 & 0.597 \\
+ \hline
+ weakpass-3p & 9.69 & 0.769 & 5.57 & 3.35 & 0.00 \\
+ \hline
+ ASLM & 11.1 & 0.23 & 5.47 & 4.34 & 5.40 \\
+ \hline
+\end{tabular}
+}
+\end{center}
+
+
 \subsection{Password cracking analysis}
 
 \subsection{Introduction}
@@ -356,9 +331,27 @@ This is often due to the large amount of misconceptions that users may have abou
 This work identified 23 misconceptions about password security, which where broken down into four categories:
 \begin{itemize}
 \item \textbf{Composition:}\\
-1-5
+Users misunderstanding what a secure password is composed of is very common. There are many ways users may misunderstand how to compose a secure password, but the five outlined by \cite{mayer2018addressing} are:
+\begin{itemize}
+\item Adding numbers makes passwords automatically more difficult to guess.
+\item Adding symbols makes passwords automatically more difficult to guess.
+\item Adding uppercase letters makes passwords automatically more difficult to guess.
+\item Replacing lowercase letters in the password with numbers, symbols, or uppercase letters makes the password more difficult to guess.
+\item A word from another language than the your own mother tongue is a secure password.
+\end{itemize}
+
 \item \textbf{Handling:}\\
 6-11
+
+\begin{itemize}
+\item Reusing passwords is OK for secure passwords, but should be avoided for weak passwords.
+\item It is OK to reuse passwords from user accounts that you log in frequently for different user accounts.
+\item Security-wise, it is better to write passwords down and keep them in a secure location than to reuse passwords for different user accounts.
+\item Notes of passwords must always be stored in a secure location.
+\item Passwords should be changed frequently.
+\item Storing passwords in the browser is the same as storing passwords in a password manager.
+\end{itemize}
+
 \item \textbf{Attacks:}\\
 12-19
 \item \textbf{Miscellaneous:}\\
