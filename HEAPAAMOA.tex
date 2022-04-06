@@ -178,8 +178,7 @@ A description of the full mechanism of this protocol is out of the scope of this
 ``OPAQUE gets around this with the following clever trick. They leave the password hash on the client’s side, but they don’t feed it the stored salt. Instead, they use a special two-party protocol called an oblivious PRF\footnote{Pseudo Random Function} to calculate a second salt (call it salt2) so that the client can use salt2 in the hash function — but does not learn the original salt.
 The basic idea of such a function is that the server and client can jointly compute a function PRF(salt, password), where the server knows `salt' and the client knows `password'. Only the client learns the output of this function. Neither party learns anything about the other party’s input.''\cite{green2018pake}\\\\
 The implementation of oblivious PRF relies on the idea that the client has the password $P$ and the server has the salt $s$.
-The output of the PRF function should be in the form $H(P)^s$ where $H$ is a special hash function that hashes passwords into elements of a cyclic (prime-order) group.
-$$H(P) \in \mathbb{Z} \bmod \mathbb{P}$$
+The output of the PRF function should be in the form $H(P)^s$ where $H$ is a special hash function that hashes passwords into elements of a cyclic (prime-order) group.\\\\
 To compute this, PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `blinds' this password by selecting a random scalar value $r$, and blinding the result to obtain $C=H(P)^r$. At this point, the client can send the blinded value $C$ over the server, secure in the understanding that (in a prime-order group), the blinding by $r$ hides all partial information about $P$.\\\\
 The server, which has salt value $s$, now further exponentiates this value to obtain $R=C^s$ and sends $R$ back to the client. Written out in detail, the result can be expressed as $R=H(P)^{rs}$. The client now computes the inverse of its own blinding value $r$ and exponentiates one more time as follows: $R'=R^{r^-1}=H(P)^s$. This element $R'$, which consists of the hash of the password exponentiated by the salt, is the output of the desired PRF function.\\\\
 A nice feature of this protocol is that if the client enters the wrong password into the protocol, it should obtain a value which is very different from the actual value it wants. This guarantee comes from the fact the hash function is very likely to produce wildly different outputs for distinct passwords.\\\\
@@ -277,7 +276,6 @@ For my experiment, I produced a simple shell script to run over all my datasets.
 \end{center}
 
 \subsubsection{Results}
-Below is how many hashes each dictionary managed to crack out of the first 1 million hashes in pwned-passwords-ntlm-ordered-by-hash-v7.
 \begin{center}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|p{10cm}|p{3cm}|p{2cm}|}
@@ -353,12 +351,27 @@ Users misunderstanding what behaviour puts the security of their accounts at ris
 
 
 \subsubsection{Phishing}
+Phishing attacks are a form of social engineering which attempt to trick victims into handing sensitive information over to an attacker.
+Attackers generally impersonate some other trusted entity when sending attacks to victims, quite often in the form of a link inside an email.\\\\
+Phishing is a major attack technique used to capture victim passwords, this is done by creating a fake log-in page for some service and then making efforts to redirect users to the fake log-in page instead of the legitimate log-in page for that service. This is often done by sending the target an email prompting them to log in to their account for some reason or another, providing them with a malicious link which appears to be the legitimate page.\\\\
+Phishing can be incredibly effective at obtaining the passwords of unsuspecting targets, these passwords can then be used by the attacker to falsely authenticate themselves and perform actions inside the victims account.
+
 \subsection{Technical vulnerabilities}
 \subsubsection{SQL injection}
+SQL injection is a type of attack which targets web database files, it takes advantage of websites which send user input into an SQL query without proper validation and cleaning.
+SQL injection can be used to expose hashed passwords stored on a database. The attacker can then attempt to decrypt these hashed passwords to gain access to user accounts on the service.
+
 \subsubsection{MITM}
+\textbf{M}an-\textbf{I}n-\textbf{T}he-\textbf{M}iddle attacks exploit systems by capturing and/or modifying communications between two target parties.
+A man-in-the-middle attack is performed how it sounds, a malicious party sits in-between two targets, intercepting their communications.
+On very insecure systems attackers could simply capture plaintext or hashed passwords being communicated across the network, but generally more complex techniques are required to capture sensitive information such as passwords. A man in the middle who has the ability to modify traffic could in theory redirect targets to a phishing webpage when they try and visit certain legitimate sites.
 
 
-\section{Mitigations} \label{SOL}
+\section{Mitigations} \label{MIT}
+\subsection{Addressing password security misconceptions}
+\subsection{Phishing}
+\subsection{Injection}
+\subsection{MITM}
 
 
 \section{Conclusion} \label{CONCL}
