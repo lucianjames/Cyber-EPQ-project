@@ -308,7 +308,7 @@ For my experiment, I produced a simple shell script to run over all my datasets.
 
 \subsubsection{Password cracking analysis conclusion}
 The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
-Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the :, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
+Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the \textbf{:}, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
 \begin{center}
 \makebox[\textwidth]{\includegraphics[width=10cm]{junkData}}
 \end{center}
@@ -355,6 +355,7 @@ Phishing attacks are a form of social engineering which attempt to trick victims
 Attackers generally impersonate some other trusted entity when sending attacks to victims, quite often in the form of a link inside an email.\\\\
 Phishing is a major attack technique used to capture victim passwords, this is done by creating a fake log-in page for some service and then making efforts to redirect users to the fake log-in page instead of the legitimate log-in page for that service. This is often done by sending the target an email prompting them to log in to their account for some reason or another, providing them with a malicious link which appears to be the legitimate page.\\\\
 Phishing can be incredibly effective at obtaining the passwords of unsuspecting targets, these passwords can then be used by the attacker to falsely authenticate themselves and perform actions inside the victims account.
+\cite{aleroud2017phishing}
 
 \subsection{Technical vulnerabilities}
 \subsubsection{SQL injection}
@@ -380,7 +381,49 @@ The authors then performed a user study, this evaluation of the intervention tex
 They concluded that their interventions could be used to effectively decrease the prevalence of many of the identified misconceptions.
 
 \subsection{Phishing}
+\cite{aleroud2017phishing} describes a variety of ways in which phishing can be detected:
+\subsubsection{Machine learning}
+Machine learning and data mining techniques can be utilised for detecting phishing, specifically:\\\\
+\large{\textbf{Classification:}}\\
+When using classification techniques, a model will be created that takes some input email/text and produces an output classifying it as either legitimate or phishing mail.\\\\
+\large{\textbf{Clustering:}}\\
+Clustering is used very similarly to classification, it partitions a set of instances into two clusters, phishing and legitimate. The objective of clustering is to group objects based on their similarities.\\\\
+\large{\textbf{Anomaly detection:}}\\
+An anomaly is a pattern in data which is not consistent with expected normal behaviour.
+Anomaly detection can be applied to the detection of phishing, treating phishing as an outlier.
+Phishing websites and mail typically demonstrate abnormal behaviour compared to their legitimate counterparts, this abnormal behaviour can be detected.\\\\
+\large{\textbf{Text mining:}}\\
+Text mining refers to utilising data mining and machine learning techniques to discover trends, patterns, and any other useful knowledge from a piece of text.
+Text mining can be used to detect phishing attempts by analysing patterns in the contents of emails, instant messages, URLs, websites, and more.
+\subsubsection{Human detection}
+\large{\textbf{Increasing user awareness:}}\\
+Since phishing primarily exploits a lack of security awareness in targets, increasing this awareness should help reduce the amount of successful phishing attacks taking place significantly.
+A variety of factors affect a users security awareness, including:
+\begin{itemize}
+\item Security knowledge
+\item Web experience
+\item Computer self-efficacy
+\item Disposition to trust
+\item Perceived risk
+\item Suspicion of humanity
+\end{itemize}
+The primary technique used to increase the likelihood of human users successfully detecting phishing attempts is training and education.
+One form of this is sending users security notices embedded in emails with graphics and text explaining what phishing attacks are and how to detect them, along with any other relevant important information.\\\\
+\large{\textbf{Involving users in identifying phishing material:}}\\
+Users are expected to be able to manually identify new phishing attempts through participation in identifying legitimate and phishing material.
+There are two approaches:
+\begin{enumerate}
+\item Manual authentication. This approach notifies users to identify suspicious behaviour linked to phishing themselves, reminding them that they must also make an effort to prevent phishing attacks from successfully taking place.
+\item User voting. This is an interesting approach where a community database is created and users can submit suspected phishes, other users can then vote for whether these submissions are phishing or legitimate. This can also be used to create labelled datasets for the training of machine-learned detection systems.
+\end{enumerate}
+\subsubsection{Other phishing countermeasures}
+\large{\textbf{Honeypots:}}\\
+Honeypots are traps created to capture information about attackers. These traps do this by convincing attackers that they are real victims, then observing exactly how the attacker decides to proceed with their phishing attempts. The data collected from observing the attacker can be used when building attacker blacklist databases, and/or to discover and block suspicious domains.\\\\
+\large{\textbf{Search engines:}}\\
+Search engines can be combined with other techniques to detect phishing. Typically legitimate pages are indexed and assigned a rank by search engines, this rank will generally be reasonably high, especially for major websites. Phishing domains will generally rank very low on search engines, or not be indexed at all, this means search engines can be used to detect suspicious links.
+
 \subsection{Injection}
+% reminder: honey passwords
 \subsection{MITM}
 
 
