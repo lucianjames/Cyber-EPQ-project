@@ -83,7 +83,7 @@ The almost universal method of authentication utilises TLS for security, and can
 \end{enumerate}
 Using a secure communication protocol greatly reduces the need for a secure authentication protocol, but it does come with its disadvantages, these include:
 \begin{enumerate}
-\item The password appears in plaintext at the server during authentication. This can be a problem as this information could me mistakenly logged and stored on the server. This has occurred on the servers of even the biggest websites in the world. It has been reported that both twitter\cite{heeti2018twitter} and facebook\cite{whittaker2019facebook} have mistakenly stored plaintext passwords in the past.
+\item The password appears in plaintext at the server during authentication. This can be a problem as this information could me mistakenly logged and stored on the server. This has occurred on the servers of even the biggest websites in the world. It has been reported that both Twitter\cite{heeti2018twitter} and Facebook\cite{whittaker2019facebook} have mistakenly stored plaintext passwords in the past.
 \item Public-key infrastructure failures can occur which causes the security to be compromised, these can include:
 \begin{itemize}
 \item Theft of server private keys.
@@ -249,7 +249,7 @@ Making a comparison between this information, and a similar analysis of the pass
 \end{tabular}
 }
 \end{center}
-
+% Should probably conclude something from this lmao
 
 \subsection{Password cracking analysis}
 
@@ -364,7 +364,11 @@ SQL injection can be used to expose hashed passwords stored on a database. The a
 \textbf{M}an-\textbf{I}n-\textbf{T}he-\textbf{M}iddle attacks exploit systems by capturing and/or modifying communications between two target parties.
 A man-in-the-middle attack is performed how it sounds, a malicious party sits in-between two targets, intercepting their communications.
 On very insecure systems attackers could simply capture plaintext or hashed passwords being communicated across the network, but generally more complex techniques are required to capture sensitive information such as passwords. A man in the middle who has the ability to modify traffic could in theory redirect targets to a phishing webpage when they try and visit certain legitimate sites.
-
+Therefore, man in the middle attacks are classified in two ways:
+\begin{enumerate}
+\item Passive attacks, when an attacker only listens.
+\item Active attacks, when an attacker modifies packets.
+\end{enumerate}
 
 \section{Mitigations} \label{MIT}
 \subsection{Addressing password security misconceptions}
@@ -380,6 +384,7 @@ They concluded that their interventions could be used to effectively decrease th
 
 \subsection{Phishing}
 \cite{aleroud2017phishing} describes a variety of ways in which phishing can be detected:
+
 \subsubsection{Machine learning}
 Machine learning and data mining techniques can be utilised for detecting phishing, specifically:\\\\
 \large{\textbf{Classification:}}\\
@@ -393,6 +398,7 @@ Phishing websites and mail typically demonstrate abnormal behaviour compared to 
 \large{\textbf{Text mining:}}\\
 Text mining refers to utilising data mining and machine learning techniques to discover trends, patterns, and any other useful knowledge from a piece of text.
 Text mining can be used to detect phishing attempts by analysing patterns in the contents of emails, instant messages, URLs, websites, and more.
+
 \subsubsection{Human detection}
 \large{\textbf{Increasing user awareness:}}\\
 Since phishing primarily exploits a lack of security awareness in targets, increasing this awareness should help reduce the amount of successful phishing attacks taking place significantly.
@@ -420,10 +426,27 @@ Honeypots are traps created to capture information about attackers. These traps 
 \large{\textbf{Search engines:}}\\
 Search engines can be combined with other techniques to detect phishing. Typically legitimate pages are indexed and assigned a rank by search engines, this rank will generally be reasonably high, especially for major websites. Phishing domains will generally rank very low on search engines, or not be indexed at all, this means search engines can be used to detect suspicious links.
 
-\subsection{Injection}
-% reminder: honey passwords
-\subsection{MITM}
+\subsection{Injection/database compromise}
 
+\subsubsection{Input validation}
+Simple input validation can be used to prevent injection attacks from being successfully used. This validation would involve removing characters or strings of characters which are used 
+
+\subsubsection{Honeypot accounts}
+The concept of honeypot accounts is simple, fake account entries are added to the user database and given relatively weak passwords and a system is set in place to alert administrators when those accounts are logged into.
+This means that malicious use of user accounts will hopefully be detected quickly.\\\\
+Honeypot accounts are not guaranteed to alert administrators though, an attacker may target specific real accounts or be able to identify the honeypot accounts by their usernames.
+
+\subsubsection{Honeywords}
+\cite{juels2013honeywords} describes the concept of ``honeywords''. this concept extends on honeypot accounts, aiming to address the issues identified with honeypot accounts.
+This is done by extending the basic concept to every single account, by having multiple passwords stored for each and every account, of which only one is the real and usable password. The fake passwords are known as the ``honeywords''.
+The attempted use of a honeyword to authenticate will alert administrators, as it should only happen if the database has been compromised and decrypted.\\\\
+The fact that honeywords make every single account inaccessible without a high chance of alerting administrators is a huge advantage over the similar method of creating honeypot accounts.
+
+
+\subsection{MITM}
+The prevention of man-in-the-middle attacks is a matter of implementing complex cryptography into communication and authentication protocols.
+Preventing passive attacks which aim to capture passwords was discussed in great detail in section \ref{PP}.
+Preventing active attacks requires much more additional cryptographic nonsense used to validate the identity of each party during communications, this additional cryptography is unfortunately not within the scope of this project.
 
 \section{Conclusion} \label{CONCL}
 
