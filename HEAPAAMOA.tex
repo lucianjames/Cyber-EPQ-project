@@ -16,28 +16,27 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-The aim of this project is to determine the strengths and weaknesses of using passwords as a means of authentication, primarily for online accounts.
-Protocols for password authentication will be introduced, at various levels of complexity and security.
-Attacks that can take place against these protocols will then be detailed, then the methods which can be used to secure systems against these attacks.
+This project aims to discover the major vulnerabilities with password-based authentication, along with solutions to these vulnerabilities.
+Some protocols that can be used to secure password-based authentication are detailed in this report to show how secure password authentication is in terms of technical cryptographic security.
+As well as citing information about vulnerabilities, an analysis of offline password cracking is made along with an analysis of the password dictionaries used for this task.
 \end{abstract}
 
+
+
 \section{Introduction} \label{INTRO}
-Passwords have been used to verify identity since ancient times\cite{NEEDED}.
-In the modern world passwords are used primarily for login processes for computer devices and online services. 
-A typical computer user will use passwords for many different purposes ranging from accessing their computer to performing online bank transactions.
+Passwords are used very often for login processes for computer devices and online services, a typical computer user will use passwords for many different purposes ranging from accessing their computer to performing online bank transactions.\\\\
 Due to the high importance that the confidentiality, integrity and availability of our data is maintained, it is of great importance that the procedures we use to verify identity in order to allow access to our data are highly secure.
-This project will assess the role that passwords play in modern authentication, and the issues surrounding the use of passwords, both the technical and human aspects will be considered.
+This project will assess how the security of password-based authentication is ensured, considering both the technical and human aspects.\\\\
 The primary issue with password-based authentication is that it relies on only one authentication factor; `Something the user knows', this can be problematic as knowledge factors can be obtained by attackers sometimes with ease compared to other factors, such as "Something the user has" or "Something the user is".
 The fact that password authentication relies only on a knowledge factor does make it very convenient for users, as there is no requirement for additional hardware or software to authenticate with a system (such as fingerprint scanners or smartcards).
-The primary cause of concern around the use of knowledge factors is that users may choose an easily guessed piece of knowledge, or fail to maintain the secrecy of the knowledge, which can cause great insecurity towards their accounts and thus their data.
-This project will focus primarily on authentication to online servers across a network assumed to be unsafe, but some mention of other use cases will (probably) be made.\\
-
-
+The primary cause of concern around the use of knowledge factors is that users may choose an easily guessed piece of knowledge, or fail to maintain the secrecy of the knowledge, which can cause great insecurity towards their accounts and thus their data.\\\\
+This project will focus on authentication to online servers across a network assumed to be unsafe, but the sections discussing choice of password are still especially relevant to the use of passwords for offline access (for example, file encryption), as brute-force attacks can be performed much easier in these scenarios.
 
 \section{Password protocols} \label{PP}
 Protocols are a system of rules and/or procedures that define how two entities interact. A password protocol is then to no surprise, a system of rules and/or procedures that define how authentication using a password takes place.
 The basic goal of almost all password protocols is simple; Allowing one party to prove that it knows some password, usually set in advance. Protocols which achieve this range from the trivial to the incredibly complex \cite{wu1998secure}.
 This section is important as developing an understanding of the various levels of security different protocols provide will be important for section \ref{VULN}.
+
 
 \subsection{A basic password authentication protocol (PAP)} \label{PAP}
 In the simplest form of a password authentication protocol, the user/client sends to the host/server their plaintext username and password, then the server verifies the password either by comparing it directly to a stored plaintext password or applying a one-way hash function to the received password and comparing it to a stored hash. 
@@ -50,6 +49,7 @@ After the Link Establishment phase is complete, an Id/Password pair is repeatedl
 PAP is not a strong authentication method. 
 Passwords are sent over the circuit `in the clear', and there is no protection from playback or repeated trial and error attacks. The peer is in control of the frequency and timing of the attempts''
 \end{quote}
+
 
 \subsection{Challenge handshake authentication protocol (CHAP)} \label{CHAP}
 IETF RFC1994 \cite{simpson1996chap} details a protocol for authentication which provides protection against playback attacks, as the password is not communicated across the connection between the client and the server.
@@ -68,6 +68,7 @@ Although if $r$ and $c$ are captured by an attacker and $h$ is a known function,
 $$h(x,c)=r \Longrightarrow x = p_{user}$$
 The process can be repeated as many times as required with different values of $x$ to find the value of $p_{user}$. As passwords are often considered low-entropy secrets \cite{NEEDED}, the ability for an attacker to perform offline attacks in unacceptable.
 Another issue with CHAP is that passwords are stored as plaintext on the server, irreversible encryption (hashing) cannot be used. If an attacker captures the password files they can use them to authenticate with the server with ease.
+
 
 \subsection{General encryption protocols} \label{GEP}
 One option to ensure security of authentication is to encrypt all communications using some form of asymmetric encryption.
@@ -96,6 +97,7 @@ Using a secure communication protocol greatly reduces the need for a secure auth
 \end{itemize}
 \end{enumerate}
 \cite{jarecki2018opaque}
+
 
 \subsection{Password-authenticated key exchange (PAKE)} \label{PAKE}
 Password-authenticated key exchange protocols provide a method for two parties to establish a shared key based on their shared knowledge of a secret password, in a way which is immune to offline attacks \cite{jarecki2018opaque}.
@@ -185,7 +187,10 @@ Theoretically, the salt can be found. The client knows the value of $R'$ which i
 
 \section{Vulnerabilities} \label{VULN}
 A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
+
+
 \subsection{Human(user) vulnerabilities}
+
 \subsubsection{Weak passwords and password behaviour} \label{usersAreRetarded}
 One of the major problems with password-based authentication systems is that users are often quite lazy with their choice of passwords.
 Choosing easily guessed passwords and re-using passwords are incredibly common.
@@ -214,8 +219,6 @@ Users misunderstanding what behaviour puts the security of their accounts at ris
 \end{itemize}
 \end{itemize}
 
-
-
 \subsubsection{Phishing}
 Phishing attacks are a form of social engineering which attempt to trick victims into handing sensitive information over to an attacker.
 Attackers generally impersonate some other trusted entity when sending attacks to victims, quite often in the form of a link inside an email.\\\\
@@ -223,14 +226,16 @@ Phishing is a major attack technique used to capture victim passwords, this is d
 Phishing can be incredibly effective at obtaining the passwords of unsuspecting targets, these passwords can then be used by the attacker to falsely authenticate themselves and perform actions inside the victims account.
 \cite{aleroud2017phishing}
 
+
 \subsection{Technical vulnerabilities}
+
 \subsubsection{SQL injection}
 SQL injection is a type of attack which targets web database files, it takes advantage of websites which send user input into an SQL query without proper validation and cleaning.
 SQL injection can be used to expose hashed passwords stored on a database, among many other things. The attacker can attempt to decrypt these hashed passwords to gain access to user accounts on the service.
 
 \subsubsection{MITM}
 \textbf{M}an-\textbf{I}n-\textbf{T}he-\textbf{M}iddle attacks exploit systems by capturing and/or modifying communications between two target parties.
-A man-in-the-middle attack is performed how it sounds, a malicious party sits in-between two targets, intercepting their communications.
+A man-in-the-middle attack is performed how it sounds, a malicious party sits in-between two targets, intercepting their communications.\\\\
 On very insecure systems attackers could simply capture plaintext or hashed passwords being communicated across the network, but generally more complex techniques are required to capture sensitive information such as passwords. A man in the middle who has the ability to modify traffic could in theory redirect targets to a phishing webpage when they try and visit certain legitimate sites.
 Therefore, man in the middle attacks are classified in two ways:
 \begin{enumerate}
@@ -238,9 +243,14 @@ Therefore, man in the middle attacks are classified in two ways:
 \item Active attacks, when an attacker modifies packets.
 \end{enumerate}
 
+
+
+
 \section{Password dataset and cracking analysis}
 One of the major issues with passwords is the fact that users often put little effort into choosing and memorising secure passwords.
 Section \ref{usersAreRetarded} mentions this, but this whole section is dedicated to a more thorough analysis of how the prevalence of weak passwords can be exploited through the use of password lists and specialised hash cracking software.
+This section can in some ways, be considered an extension of section \ref{usersAreRetarded}.
+
 
 \subsection{Datasets used} \label{datasets}
 \begin{itemize}
@@ -266,18 +276,24 @@ Sourced from haveibeenpwned.
 A set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
 Sourced from weakpass with minor modification.
 \end{itemize}
+
+
 \subsection{Software used}
 \begin{itemize}
 \item C++ (g++ compiler)
 \item Python (Not actually used for anything that made it into this report though!)
 \item Hashcat
 \end{itemize}
+
+
 \subsection{Hardware used}
 \begin{itemize}
 \item CPU: AMD Ryzen 5 2600
 \item RAM: 16GB
 \item GPU: Nvidia Quadro P5000
 \end{itemize}
+
+
 \subsection{Dataset analysis}
 \cite{pearman2017let} contains information about 4057 passwords (1522 unique) from 154 participants across 2077 web domains.
 This paper provides a reliable real-world analysis to compare the password dictionaries I have collected to.
@@ -305,14 +321,7 @@ Making a comparison between this information, and a similar analysis of the pass
 \end{tabular}
 }
 \end{center}
-% Should probably conclude something from this lmao
-%top2bill diff = 1.055
-%hk diff = 1.539
-%chhc diff = 1.42
-%wp diff = 1.751
-%aslm diff = 8.81
-The below table shows the result of $\sum{|x_i-y_i|}$ performed using the data about the password datasets, and the real-world password data. This gives a number quantifying how close each dataset is to real-world passwords in terms of character frequency.
-
+The below table shows the result of $\sum{|x_i-y_i|}$ performed using the data about the password datasets, and the data about the real-world passwords. This gives a number quantifying how close overall each dataset is to real-world passwords in terms of character frequency.
 \begin{center}
 \resizebox{10cm}{!}{%
 \begin{tabular}{|p{5cm}|p{5cm}|}
@@ -332,14 +341,16 @@ The below table shows the result of $\sum{|x_i-y_i|}$ performed using the data a
 \end{tabular}
 }
 \end{center}
+The Top2Billion-probable dataset is overall has the closest characteristics to real passwords and the ASLM dataset is by far the most unrealistic password dataset, mostly due to the fact it contains far too many special characters.
 
 
-\subsection{Password cracking analysis}
+\subsection{Password cracking analysis} \label{crack}
 
 \subsubsection{Introduction}
 Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
 This analysis will focus on dictionary attacks, with and without modification rules.
-A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
+A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.\\\\
+Being able to decrypt hashed passwords is valuable to an attacker who has successfully captured the user database of their target, as it allows them to log into user accounts on their target.\\\\
 The ``correct'' password is the password which when sent through some hashing algorithm, produces an identical hash to the one which we are trying to decrypt.\\\\
 Time taken is not considered in this analysis, as it varies greatly with the hardware being used, and the hashing algorithm used.
 Instead, this analysis focuses on the number of passwords cracked from a set of hashes.\\\\
@@ -397,7 +408,11 @@ This demonstrates that my analysis of password cracking is in some sense flawed 
 Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
 If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
 
+
+
 \section{Mitigations} \label{MIT}
+
+
 \subsection{Addressing password security misconceptions}
 Mitigating the risk of bad password security practices from users is mostly a matter of education.
 \cite{mayer2018addressing} provides explanations of the truth behind each of the identified misconceptions, they referred to these texts as ``intervention texts''.
@@ -409,7 +424,8 @@ The authors then performed a user study, this evaluation of the intervention tex
 \end{enumerate}
 They concluded that their interventions could be used to effectively decrease the prevalence of many of the identified misconceptions.
 
-\subsection{Phishing}
+
+\subsection{Phishing} \label{PHISHMIT}
 \cite{aleroud2017phishing} describes a variety of ways in which phishing can be detected:
 
 \subsubsection{Machine learning}
@@ -453,6 +469,7 @@ Honeypots are traps created to capture information about attackers. These traps 
 \large{\textbf{Search engines:}}\\
 Search engines can be combined with other techniques to detect phishing. Typically legitimate pages are indexed and assigned a rank by search engines, this rank will generally be reasonably high, especially for major websites. Phishing domains will generally rank very low on search engines, or not be indexed at all, this means search engines can be used to detect suspicious links.
 
+
 \subsection{Injection/database compromise}
 
 \subsubsection{Input validation}
@@ -470,13 +487,21 @@ The attempted use of a honeyword to authenticate will alert administrators, as i
 The fact that honeywords make every single account inaccessible without a high chance of alerting administrators is a huge advantage over the similar method of creating honeypot accounts.
 
 
-\subsection{MITM}
+\subsection{MITM} \label{MITMMIT}
 The prevention of man-in-the-middle attacks is a matter of implementing complex cryptography into communication and authentication protocols.
 Preventing passive attacks which aim to capture passwords was discussed in great detail in section \ref{PP}.
 Preventing active attacks requires much more additional cryptographic nonsense used to validate the identity of each party during communications, this additional cryptography is unfortunately not within the scope of this project.
 
-\section{Conclusion} \label{CONCL}
 
+
+\section{Conclusion} \label{CONCL}
+The security of password-based systems can be ensured on a technical level well as discussed in section \ref{PP}, although active attacks were not discussed and the solutions to active attacks were deemed out of the scope of this project in section \ref{MITMMIT}.\\\\
+The major issue with password-based systems is most certainly the fact it is well open to social-engineering based attacks such as phishing. Section \ref{PHISHMIT} details some solutions to this, but educating all users on the threat of phishing can be a difficult and time consuming task.\\\\
+The primary flaw with password-based authentication is almost solely the end user, they often do not behave in a way which can be considered secure.
+Issues with user behaviour ranges from the inability to create and remember secure passwords, to great susceptibility to social engineering attacks.\\\\
+While the analysis of password cracking (section \ref{crack}) in the scenario of a breached database had some flaws, the most realistic dictionary (according to character set count) achieved a 36.97\% recovery rate when using modification rules.
+Although the realism of the set of 1 million hashed passwords used for the password cracking analysis cannot be confirmed, it is still alarming that around 30-40\% of passwords may in theory be possible to crack with relative ease (not even taking into consideration the fact that many passwords will be used many times by many different users, the statistic of 36.97\% was with a set of completely unique hashes). This is further indication that user knowledge is of great concern to the security of password-based authentication.\\\\
+When paired with well educated users, password authentication can be considered very secure. The efficacy of password-based authentication systems depends greatly on those using the systems, great responsibility is placed on the users to keep their own accounts safe.
 
 \bibliographystyle{plain}
 \bibliography{References}
