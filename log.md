@@ -171,3 +171,8 @@ Analysis is now specified to be its own section.
   * Hand in by: 18/4/22
 * Final submission to Qufaro
   * Submit by: 25/4/22
+
+
+
+## 17/04/22
+Well, things got a bit messy in terms of my tracking of timescales for this projct, and i have not yet done my presentation due to being ill during the week it was supposed to take place, but at least i have my project 99% finished now.
