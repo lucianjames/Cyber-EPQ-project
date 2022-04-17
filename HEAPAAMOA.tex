@@ -183,142 +183,10 @@ A nice feature of this protocol is that if the client enters the wrong password 
 Theoretically, the salt can be found. The client knows the value of $R'$ which is equal to $H(P)^s$, and the value of $H(P)$, so theoretically it is possible to find the value of $s$ by computing $log_{H(S)}R'$. But this is only a theoretical possibility, as under the condition that the value produced by $H(P)$ is $2q+1$ where $q$ is a large prime number, this calculation falls into the discrete logarithm problem, which is well known to be impractical to compute \cite{dong2016math}. 
 
 
-
-\section{Password dataset and cracking analysis}
-Might make sense for this to be its own section, despite the fact some individual parts fit may better into the vulnerabilities section.
-\subsection{Datasets used} \label{datasets}
-\begin{itemize}
-\item \textbf{Top2Billion-probable-v2}\\
-20.6gb file containing 1973218846 ``passwords'', they are ordered in the file starting with the most common to the least common. All items in this dataset are sourced from other datasets.\\
-Sourced from the torrent listed on github.com/berzerk0/Probable-Wordlists.
-\item \textbf{hk-hlm-founds.txt}\\
-389.4mb file containing 38647798 ``passwords'', quick examination of the file shows some reasonably likely passwords and some gibberish.\\
-Sourced from weakpass.
-\item \textbf{cyclone.hashesorg.hashkiller.combined}\\
-15.0gb file containing 1469156570 ``passwords'', quick examination of the file shows some reasonably likely passwords and some gibberish.\\
-Sourced from weakpass.
-\item \textbf{weakpass-3p}\\
-14.5gb file containing 1454086314 ``passwords'', the file appears to be sorted alphabetically. fair amount of gibberish.\\
-Sourced from weakpass.
-\item \textbf{ASLM}\\
-479.8mb file containing 41591035 ``passwords''.\\
-Sourced from weakpass.
-\item \textbf{pwned-passwords-ntlm-ordered-by-hash-v7}\\
-20.6gb file containing 613584246 NTLM hashes of ``passwords'', along with the frequency that they are found in ``data breaches''.\\
-Sourced from haveibeenpwned.
-\item \textbf{Rules1.txt}\\
-A set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
-Sourced from weakpass with minor modification.
-\end{itemize}
-\subsection{Software used}
-\begin{itemize}
-\item C++ (g++ compiler)
-\item Python
-\item Hashcat
-\end{itemize}
-\subsection{Hardware used}
-\begin{itemize}
-\item CPU: AMD Ryzen 5 2600
-\item RAM: 16GB
-\item GPU: Nvidia Quadro P5000
-\end{itemize}
-\subsection{Dataset analysis}
-\cite{pearman2017let} contains information about 4057 passwords (1522 unique) from 154 participants across 2077 web domains.
-This paper provides a reliable real-world analysis to compare the password dictionaries I have collected to.
-The characteristics of the data collected for this paper are as follows:
-\begin{quote}
-``On average, participants submitted a password 1.40 times per day. Including all passwords, participants had an average password length of 9.92 characters with their average password composed from 2.77 character classes including 2.70 digits, 5.91 lowercase letters, 0.84 uppercase letters, and 0.46 special characters.''
-\end{quote}
-Making a comparison between this information, and a similar analysis of the password dictionaries listed in \ref{datasets} provides some indication of how realistic these dictionaries are.
-\begin{center}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|p{5cm}|p{2cm}|p{3cm}|p{3cm}|p{2cm}|p{3cm}|}
- \hline
- Dataset & Avg length & Avg n uppercase & Avg n lowercase & Avg n digits & Avg n special \\ [0.5ex] 
- \hline\hline
- Top2Billion-probable & 10.01 & 0.969 & 5.8 & 3.14 & 0.174 \\
- \hline
- hk-hlm-founds & 9.56 & 0.715 & 5.49 & 3.26 & 0.386 \\
- \hline
- CHHC & 9.84 & 0.677 & 5.58 & 3.41 & 0.597 \\
- \hline
- weakpass-3p & 9.69 & 0.769 & 5.57 & 3.35 & 0.00 \\
- \hline
- ASLM & 11.1 & 0.23 & 5.47 & 4.34 & 5.40 \\
- \hline
-\end{tabular}
-}
-\end{center}
-% Should probably conclude something from this lmao
-
-\subsection{Password cracking analysis}
-
-\subsubsection{Introduction}
-Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
-This analysis will focus on dictionary attacks, with and without modification rules.
-A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
-The ``correct'' password is the password which when sent through some hashing algorithm, produces an identical hash to the one which we are trying to decrypt.\\\\
-Time taken is not considered in this analysis, as it varies greatly with the hardware being used, and the hashing algorithm used.
-Instead, this analysis focuses on the number of passwords cracked from a set of hashes.\\\\
-Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.
-For this analysis, the ``rules'' file consisted of 229 rules which perform simple modifications to every item in the input password dictionary, these modifications include, among others:
-\begin{itemize}
-\item Capitalising the first letter of passwords
-\item Appending numbers which represent ``years'' to the end of passwords
-\item Appending recent years to the end of passwords
-\item Appending special chars
-\end{itemize}
-For my experiment, I produced a simple shell script to run over all my datasets. This script is pictured below.
-\begin{center}
-\makebox[\textwidth]{\includegraphics[width=\textwidth]{hashcatScript}}
-\end{center}
-
-\subsubsection{Results}
-\begin{center}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{|p{10cm}|p{3cm}|p{2cm}|}
- \hline
- Dataset & Raw & Percent \\ [0.5ex] 
- \hline\hline
- Top2Billion-probable without rules & 245137/1000000 & 24.51\%\\
- \hline 
- Top2Billion-probable with rules & 369683/1000000 & 36.97\%\\
- \hline\hline
- hk-hlm-founds without rules & 28399/1000000 & 2.84\%\\
- \hline
- hk-hlm-founds with rules & 99867/1000000 & 9.99\%\\
- \hline\hline
- cyclone.hashesorg.hashkiller.combined without rules & 934087/1000000 & 93.41\%\\
- \hline
- cyclone.hashesorg.hashkiller.combined with rules & 934344/1000000 & 93.43\%\\
- \hline\hline
- weakpass-3p without rules & 55876/1000000 & 85.59\%\\
- \hline
- weakpass-3p with rules & 863702/1000000 & 86.37\%\\
- \hline\hline
- ASLM without rules & 52045/1000000 & 5.20\%\\
- \hline
- ASLM with rules & 150402/1000000 & 15.04\%\\
- \hline
-\end{tabular}
-}
-\end{center}
-
-\subsubsection{Password cracking analysis conclusion}
-The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
-Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the \textbf{:}, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
-\begin{center}
-\makebox[\textwidth]{\includegraphics[width=10cm]{junkData}}
-\end{center}
-This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets I am using.
-Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
-If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
-
-
 \section{Vulnerabilities} \label{VULN}
 A variety of vulnerabilities can be exploited to gain unauthorised access to a system which utilises passwords for authentication, these attacks can exploit technical flaws, human behaviour, or both.
 \subsection{Human(user) vulnerabilities}
-\subsubsection{Weak passwords and password behaviour}
+\subsubsection{Weak passwords and password behaviour} \label{usersAreRetarded}
 One of the major problems with password-based authentication systems is that users are often quite lazy with their choice of passwords.
 Choosing easily guessed passwords and re-using passwords are incredibly common.
 This is often due to the large amount of misconceptions that users may have about password security.\\\\
@@ -358,7 +226,7 @@ Phishing can be incredibly effective at obtaining the passwords of unsuspecting 
 \subsection{Technical vulnerabilities}
 \subsubsection{SQL injection}
 SQL injection is a type of attack which targets web database files, it takes advantage of websites which send user input into an SQL query without proper validation and cleaning.
-SQL injection can be used to expose hashed passwords stored on a database. The attacker can then attempt to decrypt these hashed passwords to gain access to user accounts on the service.
+SQL injection can be used to expose hashed passwords stored on a database, among many other things. The attacker can attempt to decrypt these hashed passwords to gain access to user accounts on the service.
 
 \subsubsection{MITM}
 \textbf{M}an-\textbf{I}n-\textbf{T}he-\textbf{M}iddle attacks exploit systems by capturing and/or modifying communications between two target parties.
@@ -369,6 +237,165 @@ Therefore, man in the middle attacks are classified in two ways:
 \item Passive attacks, when an attacker only listens.
 \item Active attacks, when an attacker modifies packets.
 \end{enumerate}
+
+\section{Password dataset and cracking analysis}
+One of the major issues with passwords is the fact that users often put little effort into choosing and memorising secure passwords.
+Section \ref{usersAreRetarded} mentions this, but this whole section is dedicated to a more thorough analysis of how the prevalence of weak passwords can be exploited through the use of password lists and specialised hash cracking software.
+
+\subsection{Datasets used} \label{datasets}
+\begin{itemize}
+\item \textbf{Top2Billion-probable-v2}\\
+20.6gb file containing 1973218846 ``passwords'', they are ordered in the file starting with the most common to the least common. All items in this dataset are sourced from other datasets.\\
+Sourced from the torrent listed on github.com/berzerk0/Probable-Wordlists.
+\item \textbf{hk-hlm-founds.txt}\\
+389.4mb file containing 38647798 ``passwords'', quick examination of the file shows some reasonably likely passwords and some gibberish.\\
+Sourced from weakpass.
+\item \textbf{cyclone.hashesorg.hashkiller.combined}\\
+15.0gb file containing 1469156570 ``passwords'', quick examination of the file shows some reasonably likely passwords and some gibberish.\\
+Sourced from weakpass.
+\item \textbf{weakpass-3p}\\
+14.5gb file containing 1454086314 ``passwords'', the file appears to be sorted alphabetically. fair amount of gibberish.\\
+Sourced from weakpass.
+\item \textbf{ASLM}\\
+479.8mb file containing 41591035 ``passwords''.\\
+Sourced from weakpass.
+\item \textbf{pwned-passwords-ntlm-ordered-by-hash-v7}\\
+20.6gb file containing 613584246 NTLM hashes of ``passwords'', along with the frequency that they are found in ``data breaches''.\\
+Sourced from haveibeenpwned.
+\item \textbf{Rules1.txt}\\
+A set of rules for use during rule-based password cracking. It consists of 229 rules which modify input password guesses.
+Sourced from weakpass with minor modification.
+\end{itemize}
+\subsection{Software used}
+\begin{itemize}
+\item C++ (g++ compiler)
+\item Python (Not actually used for anything that made it into this report though!)
+\item Hashcat
+\end{itemize}
+\subsection{Hardware used}
+\begin{itemize}
+\item CPU: AMD Ryzen 5 2600
+\item RAM: 16GB
+\item GPU: Nvidia Quadro P5000
+\end{itemize}
+\subsection{Dataset analysis}
+\cite{pearman2017let} contains information about 4057 passwords (1522 unique) from 154 participants across 2077 web domains.
+This paper provides a reliable real-world analysis to compare the password dictionaries I have collected to.
+The characteristics of the data collected for this paper are as follows:
+\begin{quote}
+``On average, participants submitted a password 1.40 times per day. Including all passwords, participants had an average password length of 9.92 characters with their average password composed from 2.77 character classes including 2.70 digits, 5.91 lowercase letters, 0.84 uppercase letters, and 0.46 special characters.''
+\end{quote}
+Making a comparison between this information, and a similar analysis of the password dictionaries listed in \ref{datasets} provides some indication of how realistic these dictionaries are.
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{4cm}|p{2cm}|p{3cm}|p{3cm}|p{2cm}|p{3cm}|}
+ \hline
+ Dataset & Avg length & Avg n uppercase & Avg n lowercase & Avg n digits & Avg n special \\ [0.5ex] 
+ \hline\hline
+ Top2Billion-probable & 10.01 & 0.969 & 5.8 & 3.14 & 0.174 \\
+ \hline
+ hk-hlm-founds & 9.56 & 0.715 & 5.49 & 3.26 & 0.386 \\
+ \hline
+ CHHC & 9.84 & 0.677 & 5.58 & 3.41 & 0.597 \\
+ \hline
+ weakpass-3p & 9.69 & 0.769 & 5.57 & 3.35 & 0.00 \\
+ \hline
+ ASLM & 11.1 & 0.23 & 5.47 & 4.34 & 5.40 \\
+ \hline
+\end{tabular}
+}
+\end{center}
+% Should probably conclude something from this lmao
+%top2bill diff = 1.055
+%hk diff = 1.539
+%chhc diff = 1.42
+%wp diff = 1.751
+%aslm diff = 8.81
+The below table shows the result of $\sum{|x_i-y_i|}$ performed using the data about the password datasets, and the real-world password data. This gives a number quantifying how close each dataset is to real-world passwords in terms of character frequency.
+
+\begin{center}
+\resizebox{10cm}{!}{%
+\begin{tabular}{|p{5cm}|p{5cm}|}
+ \hline
+ Dataset & Sum of distances \\ [0.5ex]
+ \hline\hline
+ Top2Billion-probable & 1.055 \\
+ \hline
+ hk-hlm-founds & 1.539 \\
+ \hline
+ CHHC & 1.42 \\
+ \hline
+ weakpass-3p & 1.751 \\
+ \hline
+ ASLM & 8.81 \\
+ \hline
+\end{tabular}
+}
+\end{center}
+
+
+\subsection{Password cracking analysis}
+
+\subsubsection{Introduction}
+Hashcat is a GPU-accelerated tool for cracking password hashes, it supports a wide range of hash types and many different attack modes.
+This analysis will focus on dictionary attacks, with and without modification rules.
+A dictionary attack is a method of discovering the correct password by systematically trying all entries in a ``dictionary''.
+The ``correct'' password is the password which when sent through some hashing algorithm, produces an identical hash to the one which we are trying to decrypt.\\\\
+Time taken is not considered in this analysis, as it varies greatly with the hardware being used, and the hashing algorithm used.
+Instead, this analysis focuses on the number of passwords cracked from a set of hashes.\\\\
+Modification rules can be used to augment a password dictionary by doing simple operations such as appending numbers, capitalising the first letter, etc.
+For this analysis, the ``rules'' file consisted of 229 rules which perform simple modifications to every item in the input password dictionary, these modifications include, among others:
+\begin{itemize}
+\item Capitalising the first letter of passwords
+\item Appending numbers which represent years to the end of passwords (people born in 1998 may append ``98'' onto their passwords for example)
+\item Appending recent years to the end of passwords
+\item Appending special chars
+\end{itemize}
+For my experiment, I produced a simple shell script to run over all my datasets. This script is pictured below.
+\begin{center}
+\makebox[\textwidth]{\includegraphics[width=\textwidth]{hashcatScript}}
+\end{center}
+
+\subsubsection{Results table}
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|p{10cm}|p{3cm}|p{2cm}|}
+ \hline
+ Dataset & Raw & Percent \\ [0.5ex] 
+ \hline\hline
+ Top2Billion-probable without rules & 245137/1000000 & 24.51\%\\
+ \hline 
+ Top2Billion-probable with rules & 369683/1000000 & 36.97\%\\
+ \hline\hline
+ hk-hlm-founds without rules & 28399/1000000 & 2.84\%\\
+ \hline
+ hk-hlm-founds with rules & 99867/1000000 & 9.99\%\\
+ \hline\hline
+ cyclone.hashesorg.hashkiller.combined without rules & 934087/1000000 & 93.41\%\\
+ \hline
+ cyclone.hashesorg.hashkiller.combined with rules & 934344/1000000 & 93.43\%\\
+ \hline\hline
+ weakpass-3p without rules & 55876/1000000 & 85.59\%\\
+ \hline
+ weakpass-3p with rules & 863702/1000000 & 86.37\%\\
+ \hline\hline
+ ASLM without rules & 52045/1000000 & 5.20\%\\
+ \hline
+ ASLM with rules & 150402/1000000 & 15.04\%\\
+ \hline
+\end{tabular}
+}
+\end{center}
+
+\subsubsection{Password cracking analysis conclusion}
+The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
+Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the \textbf{:}, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
+\begin{center}
+\makebox[\textwidth]{\includegraphics[width=10cm]{junkData}}
+\end{center}
+This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets I am using.
+Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
+If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
 
 \section{Mitigations} \label{MIT}
 \subsection{Addressing password security misconceptions}
