@@ -362,9 +362,11 @@ For this analysis, the ``rules'' file consisted of 229 rules which perform simpl
 \item Appending recent years to the end of passwords
 \item Appending special chars
 \end{itemize}
-For my experiment, I produced a simple shell script to run over all my datasets. This script is pictured below.
+For my experiment, I produced a simple shell script to run over all my datasets. This script is pictured below. (fig \ref{fig:sh})
 \begin{center}
-\makebox[\textwidth]{\includegraphics[width=\textwidth]{hashcatScript}}
+\begin{figure}
+\makebox[\textwidth]{\includegraphics[width=\textwidth]{hashcatScript}} \caption{Shell script for hashcat} \label{fig:sh}
+\end{figure}
 \end{center}
 
 \subsubsection{Results table}
@@ -400,13 +402,15 @@ For my experiment, I produced a simple shell script to run over all my datasets.
 
 \subsubsection{Password cracking analysis conclusion}
 The cyclone.hashesorg.hashkiller.combined dataset achieved an incredibly high recovery rate, this indicates that pwned-passwords-ntlm-ordered-by-hash-v7 was probably made using this dataset, as 93\% recovery is not very realistic.
-Pictured below are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the \textbf{:}, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.
-\begin{center}
-\makebox[\textwidth]{\includegraphics[width=10cm]{junkData}}
-\end{center}
+Pictured below (fig \ref{fig:junk}) are some of the ``passwords'' that the CHHC dataset managed to recover (hashes left of the \textbf{:}, ``passwords'' on the right), further solidifying the idea that the recovery rate is high not because of dataset realism, but because they overlap.\\\\
 This demonstrates that my analysis of password cracking is in some sense flawed due to the datasets I am using.
 Due to this apparent flaw in my methods, I cannot reliably come to any conclusions about the rate at which real-world passwords can be cracked using dictionary attacks.
 If the time constraints of this project were not so strict, I could attempt to source a more reliable dataset of password hashes and retry this experiment.
+\begin{center}
+\begin{figure}[h!]
+\makebox[\textwidth]{\includegraphics[width=10cm]{junkData}} \caption{Junk data seen in output of hashcat} \label{fig:junk}
+\end{figure}
+\end{center}
 
 
 
@@ -501,7 +505,7 @@ The primary flaw with password-based authentication is almost solely the end use
 Issues with user behaviour ranges from the inability to create and remember secure passwords, to great susceptibility to social engineering attacks.\\\\
 While the analysis of password cracking (section \ref{crack}) in the scenario of a breached database had some flaws, the most realistic dictionary (according to character set count) achieved a 36.97\% recovery rate when using modification rules.
 Although the realism of the set of 1 million hashed passwords used for the password cracking analysis cannot be confirmed, it is still alarming that around 30-40\% of passwords may in theory be possible to crack with relative ease (not even taking into consideration the fact that many passwords will be used many times by many different users, the statistic of 36.97\% was with a set of completely unique hashes). This is further indication that user knowledge is of great concern to the security of password-based authentication.\\\\
-When paired with well educated users, password authentication can be considered very secure. The efficacy of password-based authentication systems depends greatly on those using the systems, great responsibility is placed on the users to keep their own accounts safe.
+When paired with well educated users, password authentication can be considered very secure. The effectiveness of password-based authentication systems depends greatly on those using the systems, great responsibility is placed on the users to keep their own accounts safe.
 
 \bibliographystyle{plain}
 \bibliography{References}
