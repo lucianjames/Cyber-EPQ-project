@@ -1,0 +1,73 @@
+\documentclass[11pt]{article}
+
+\title{Evaluation of resources}
+\author{Lucian James}
+
+
+\begin{document}
+\maketitle
+
+\section{The Secure Remote Password Protocol.}
+\cite{wu1998secure} provided me with the information I needed to detail how the secure remote password protocol worked. There were some aspects I did not like about this paper though, such as the confusing use of some symbols (some symbols were used to represent two things at once!), and the use of names to represent the client and the server. I changed these things when I wrote about how the SRP protocol works.
+
+
+
+\section{Addressing misconceptions about password security effectively}
+\cite{mayer2018addressing} contained lots of helpful information about the misconceptions users have which may lead to vulnerabilities. This work also concluded that these misconceptions can be addressed by training, which meant i could say training can be an effective mitigation.
+
+
+
+\section{Let's go in for a closer look: Observing passwords in their natural habitat}
+\cite{pearman2017let} provided me with incredibly useful data about real-world passwords which i used in my dataset analysis, this real-world data allowed me to make some comparison between the password dictionaries i had collected, and reliable data about real-world passwords.
+
+
+
+\section{PPP Challenge Handshake Authentication Protocol (CHAP)}
+\cite{simpson1996chap} provided me with the information i needed about CHAP, although i did expand my explanation of the steps of the protocol a bit.
+
+
+
+\section{PPP Authentication Protocols}
+\cite{simpson1992pap} provided me with the information i needed about PAP, i didnt need to use the majority of the information on this RFC, all i quoted was a part of a section.
+
+
+
+\section{OPAQUE: an asymmetric PAKE protocol secure against pre-computation attacks}
+\cite{jarecki2018opaque} was technical for me to utilise properly, relied mostly on \cite{green2018pake} for OPAQUE stuff, but its good to cite the original paper too.
+
+
+
+\section{Let’s talk about PAKE}
+\cite{green2018pake} was incredibly useful for my section on PAKE, it did have some issues such as a lack of exact detailing of why salts are protected using OPAQUE (i had to figure this out for myself, had to research discrete log problem a bit).
+
+
+
+\section{Math in network security: A crash course}
+Used \cite{dong2016math} as a source to quickly learn about the discrete log problem, which i needed to describe salt secrecy in OPAQUE
+
+
+
+\section{Twitter advises all users to change passwords after glitch exposed some in plain text}
+\cite{heeti2018twitter} was a good source on twitter accidentally storing passwords in plaintext.
+
+
+
+\section{Facebook admits it stored 'hundreds of millions' of account passwords in plaintext}
+\cite{whittaker2019facebook} was a good source on facebook accidentally storing a lot of passwords in plaintext.
+
+
+
+\section{Phishing environments, techniques, and countermeasures: A survey}
+\cite{aleroud2017phishing} provided me with good quality information about phishing, and countermeasures that can be put in place to help the prevention of phishing attacks.
+
+
+
+\section{Honeywords: Making password-cracking detectable}
+\cite{juels2013honeywords} provided me with good quality information about the use of honeypot accounts and ``honeywords'' to create alerts upon the use of stolen password data.
+
+
+
+\bibliographystyle{plain}
+\bibliography{References}
+
+\end{document}
