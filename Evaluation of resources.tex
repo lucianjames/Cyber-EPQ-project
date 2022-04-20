@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+\usepackage{graphicx}
+\usepackage[margin=0.5in]{geometry}
 
 \title{Evaluation of resources}
 \author{Lucian James}
@@ -6,68 +8,49 @@
 
 \begin{document}
 \maketitle
-
-\section{The Secure Remote Password Protocol.}
-\cite{wu1998secure} provided me with the information I needed to detail how the secure remote password protocol worked. There were some aspects I did not like about this paper though, such as the confusing use of some symbols (some symbols were used to represent two things at once!), and the use of names to represent the client and the server. I changed these things when I wrote about how the SRP protocol works.
-
-
-
-\section{Addressing misconceptions about password security effectively}
-\cite{mayer2018addressing} contained lots of helpful information about the misconceptions users have which may lead to vulnerabilities. This work also concluded that these misconceptions can be addressed by training, which meant i could say training can be an effective mitigation.
-
-
-
-\section{Let's go in for a closer look: Observing passwords in their natural habitat}
-\cite{pearman2017let} provided me with incredibly useful data about real-world passwords which i used in my dataset analysis, this real-world data allowed me to make some comparison between the password dictionaries i had collected, and reliable data about real-world passwords.
-
-
-
-\section{PPP Challenge Handshake Authentication Protocol (CHAP)}
-\cite{simpson1996chap} provided me with the information i needed about CHAP, although i did expand my explanation of the steps of the protocol a bit.
-
-
-
-\section{PPP Authentication Protocols}
-\cite{simpson1992pap} provided me with the information i needed about PAP, i didnt need to use the majority of the information on this RFC, all i quoted was a part of a section.
-
-
-
-\section{OPAQUE: an asymmetric PAKE protocol secure against pre-computation attacks}
-\cite{jarecki2018opaque} was technical for me to utilise properly, relied mostly on \cite{green2018pake} for OPAQUE stuff, but its good to cite the original paper too.
-
-
-
-\section{Let’s talk about PAKE}
-\cite{green2018pake} was incredibly useful for my section on PAKE, it did have some issues such as a lack of exact detailing of why salts are protected using OPAQUE (i had to figure this out for myself, had to research discrete log problem a bit).
-
-
-
-\section{Math in network security: A crash course}
-Used \cite{dong2016math} as a source to quickly learn about the discrete log problem, which i needed to describe salt secrecy in OPAQUE
-
-
-
-\section{Twitter advises all users to change passwords after glitch exposed some in plain text}
-\cite{heeti2018twitter} was a good source on twitter accidentally storing passwords in plaintext.
-
-
-
-\section{Facebook admits it stored 'hundreds of millions' of account passwords in plaintext}
-\cite{whittaker2019facebook} was a good source on facebook accidentally storing a lot of passwords in plaintext.
-
-
-
-\section{Phishing environments, techniques, and countermeasures: A survey}
-\cite{aleroud2017phishing} provided me with good quality information about phishing, and countermeasures that can be put in place to help the prevention of phishing attacks.
-
-
-
-\section{Honeywords: Making password-cracking detectable}
-\cite{juels2013honeywords} provided me with good quality information about the use of honeypot accounts and ``honeywords'' to create alerts upon the use of stolen password data.
-
-
-
+\newpage
+\begin{center}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|p{6cm}|p{12cm}|p{1cm}|}
+ \hline
+ Name & Evaluation & Cited? \\
+ \hline\hline
+ The Secure Remote Password Protocol \cite{wu1998secure} & Provided me with the information I needed to detail how the secure remote password protocol worked. There were some aspects I did not like about this paper though, such as the confusing use of some symbols (some symbols were used to represent two things at once!), and the use of names to represent the client and the server. I changed these things when I wrote about how the SRP protocol works. & yes\\
+ \hline 
+ Addressing misconceptions about password security effectively \cite{mayer2018addressing} & Contained lots of helpful information about the misconceptions users have which may lead to vulnerabilities. This work also concluded that these misconceptions can be addressed by training, which meant i could say training can be an effective mitigation. & yes\\
+ \hline
+ Let's go in for a closer look: Observing passwords in their natural habitat \cite{pearman2017let} & Provided me with incredibly useful data about real-world passwords which i used in my dataset analysis, this real-world data allowed me to make some comparison between the password dictionaries i had collected, and reliable data about real-world passwords. & yes\\
+ \hline
+ PPP Challenge Handshake Authentication Protocol (CHAP) \cite{simpson1996chap} & Provided me with the information i needed about CHAP, although i did expand my explanation of the steps of the protocol a bit. & yes\\
+ \hline
+ PPP Authentication Protocols \cite{simpson1992pap} & Provided me with the information i needed about PAP, i didnt need to use the majority of the information on this RFC, all i quoted was a part of a section. & yes\\
+ \hline
+ OPAQUE: an asymmetric PAKE protocol secure against pre-computation attacks \cite{jarecki2018opaque} & was too technical for me to utilise properly, relied mostly on \cite{green2018pake} for OPAQUE stuff, but its good to cite the original paper too. & yes\\
+ \hline
+ Let’s talk about PAKE \cite{green2018pake} & Was incredibly useful for my section on PAKE, it did have some issues such as a lack of exact detailing of why salts are protected using OPAQUE (i had to figure this out for myself, had to research discrete log problem a bit). & yes\\
+ \hline
+ Math in network security: A crash course \cite{dong2016math} & used as a source to quickly learn about the discrete log problem, which i needed to describe salt secrecy in OPAQUE & yes\\
+ \hline
+ Twitter advises all users to change passwords after glitch exposed some in plain text \cite{heeti2018twitter} & Was a good source on twitter accidentally storing passwords in plaintext. & yes\\
+ \hline
+ Facebook admits it stored 'hundreds of millions' of account passwords in plaintext \cite{whittaker2019facebook} & Was a good source on facebook accidentally storing a lot of passwords in plaintext. & yes\\ 
+ \hline
+ Phishing environments, techniques, and countermeasures: A survey \cite{aleroud2017phishing} & Provided me with good quality information about phishing, and countermeasures that can be put in place to help the prevention of phishing attacks. & yes\\
+ \hline
+ Honeywords: Making password-cracking detectable \cite{juels2013honeywords} & Provided me with good quality information about the use of honeypot accounts and ``honeywords'' to create alerts upon the use of stolen password data. & yes\\
+ \hline
+ Is this really you? An empirical study on risk-based authentication applied in the wild \cite{wiefling2019really} & This paper presents some interesting information about ``risk-based authentication'', but in the end i decided not to include it as it isnt very directly linked to password authentication specifically & no\\
+ \hline
+ Password managers: Attacks and defenses \cite{silver2014password} & No issues with the quality of this source, but i didnt feel like including password managers in my report as i feel they are often adding an additional authentication factor & no\\
+ \hline
+ New directions in cryptography \cite{diffie1976new} & A technical paper about cryptography, not really relevant enough for me to include in my final report. I think i included it in my bibliography originally because i went on a bit of a tangent looking at all kinds of cryptography at one point, but i realised i was stepping pretty far from my original plans as well as going too deep into mathematics i dont understand & no\\
+ \hline
+ Password authenticated key exchange by juggling \cite{hao2008password} & Paper about a PAKE protocol, didnt use this because i found \cite{green2018pake} which i found to be easier for me to understand. & no\\
+ \hline
+\end{tabular}
+}
+\end{center}
+\newpage
 \bibliographystyle{plain}
 \bibliography{References}
-
 \end{document}
