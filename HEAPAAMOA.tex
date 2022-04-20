@@ -148,10 +148,10 @@ $$P_1=P_2 \Longrightarrow g^{ba+bu(H(S,P_2))}=g^{ba+bu(H(S,P_1))} \therefore S_1
 \end{enumerate}
 The SRP protocol has the following advantages: \cite{green2018pake}
 \begin{itemize}
-\item If the hosts password file is captured and the intruder learns the value of $v$, it should still not allow the intruder to impersonate the user without an expensive dictionary search to find the value of $P_1$.
+\item If the hosts password file is captured and the intruder learns the value of $v$, it should still not allow the intruder to impersonate the user without a potentially expensive dictionary search to find the value of $P_1$.
 \item Unlike earlier PAKE protocols, it does not require the passwords to be stored on the server in plaintext, instead, the server stores a ``verifier'' which is a one-way function of the the password hash. This means that a breach of the database does not immediately allow an attacker to impersonate users, they must first perform expensive dictionary attacks to obtain the raw passwords. The technical name for this is asymmetric password-authenticated key exchange.
-\item Public-key infrastructure is not required.
-\item Despite drawbacks that it may have, the SRP protocol is simple, there is working code in OpenSSL that even integrates with TLS, which makes it relatively easy to adopt.
+\item Public-key infrastructure is not required. Resolving the issues listed in section \ref{GEP}.
+\item The SRP protocol is simple, and there is working code in OpenSSL that even integrates with TLS which makes it relatively easy to adopt.
 \end{itemize}
 The SRP protocol has the following disadvantages: \cite{green2018pake}
 \begin{itemize}
@@ -167,8 +167,11 @@ A description of the full mechanism of this protocol is out of the scope of this
 \item OPAQUE does not reveal salts to potential attackers. This is achieved by combining the salt with the password in a way which ensures the client does not learn the salt and the server does not learn the password.
 \item OPAQUE works with any password hashing function.
 \item All the hashing work is done on the client, which means OPAQUE can actually take load off the server.
-\item Unlike SRP, OPAQUE has a reasonable security proof.
+\item Unlike SRP, OPAQUE has a reasonable security proof. According to \cite{green2018pake}, the security proof in the original SRP paper is not extensive enough, whereas the proof in the OPAQUE paper is extensive enough to be considered reasonably secure. The security proof issues with the original SRP were addressed in later revisions of the protocol and the paper
 \end{itemize}
+The main advantage is the fact OPAQUE does not reveal the salt to attackers. Revealing the salt allows hackers to perform pre-computation attacks which speed up the process of decrypting stolen hashed passwords. Performing this pre-computation allows the attackers to get usable passwords in less time from a breach of a servers hashed password files, giving administrators less time to react.\\\\
+
+
 \begin{center}
 \textbf{Details about salt secrecy}\\
 \end{center}
@@ -179,7 +182,7 @@ A description of the full mechanism of this protocol is out of the scope of this
 The basic idea of such a function is that the server and client can jointly compute a function PRF(salt, password), where the server knows `salt' and the client knows `password'. Only the client learns the output of this function. Neither party learns anything about the other party’s input.''\\\\
 The implementation of oblivious PRF relies on the idea that the client has the password $P$ and the server has the salt $s$.
 The output of the PRF function should be in the form $H(P)^s$ where $H$ is a special hash function that hashes passwords into elements of a cyclic (prime-order) group.\\\\
-To compute this, PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `blinds' this password by selecting a random scalar value $r$, and blinding the result to obtain $C=H(P)^r$. At this point, the client can send the blinded value $C$ over the server, secure in the understanding that (in a prime-order group), the blinding by $r$ hides all partial information about $P$.\\\\
+To compute this, the PRF requires a protocol between the client and server. In this protocol, the client first computes $H(P)$ and then `blinds' this password by selecting a random scalar value $r$, and blinding the result to obtain $C=H(P)^r$. The client then sends the blinded value $C$ over to the server. This is secure because (in a prime-order group), the blinding by $r$ hides all partial information about $P$.\\\\
 The server, which has salt value $s$, now further exponentiates this value to obtain $R=C^s$ and sends $R$ back to the client. Written out in detail, the result can be expressed as $R=H(P)^{rs}$. The client now computes the inverse of its own blinding value $r$ and exponentiates one more time as follows: $R'=R^{r^{-1}}=H(P)^s$. This element $R'$, which consists of the hash of the password exponentiated by the salt, is the output of the desired PRF function.\\\\
 A nice feature of this protocol is that if the client enters the wrong password into the protocol, it should obtain a value which is very different from the actual value it wants. This guarantee comes from the fact the hash function is very likely to produce wildly different outputs for distinct passwords.\\\\
 Theoretically, the salt can be found. The client knows the value of $R'$ which is equal to $H(P)^s$, and the value of $H(P)$, so theoretically it is possible to find the value of $s$ by computing $\mathrm{log}_{H(S)}R'$. But this is only a theoretical possibility, as under the condition that the value produced by $H(P)$ is $2q+1$ where $q$ is a large prime number, this calculation falls into the discrete logarithm problem, which is well known to be impractical to compute \cite{dong2016math}. 
