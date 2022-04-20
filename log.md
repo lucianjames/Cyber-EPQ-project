@@ -218,3 +218,12 @@ Since the last entry:
 * Rearranged the vulnerabilities section, moved it before the dataset/password cracking analysis
 * Improved dataset analysis writeup.
 * Started writing the conclusion.
+
+
+
+## 20/04/22
+Did the presentation today, any changes from this point onwards should be pretty minor
+Since the last entry:
+* Created evaluation of resources table
+* Created presentation powerpoint and presented it
+* Various finishing touches and minor changes across the entire essay, including changes based on feedback from mr.eggleton
