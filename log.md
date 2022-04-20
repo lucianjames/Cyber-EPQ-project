@@ -96,7 +96,7 @@ The current planned timescales are:
 
 
 ## 28/01/22
-Added hashcat to the plan.
+Added hashcat to the plan, "analysis of password datasets" from the previous outline did include using hashcat, but specifically mentioning it makes it clearer
 
 The current planned timescales are:
 * Introduction section {STARTED}
@@ -161,7 +161,7 @@ Analysis is now specified to be its own section.
   * Finish by: 19/3/22
 * Presentation
   * Will happen on: 28/3/22
-* Solutions section
+* Mitigations section
   * Finish by: 2/4/22
 * Conclusion
   * Finish by: 16/4/22
@@ -174,5 +174,47 @@ Analysis is now specified to be its own section.
 
 
 
+## 02/03/22
+Since the last entry, I have mostly been writing the code for the dataset analysis. This included:
+* Writing code to check if a password contains a certain type of character.
+* Breaking C++ code down into header files.
+* Writing python programs for graphing/debugging purposes.
+Changes to the report itself have been very minimal.
+
+
+
+## 11/03/22
+Since the last entry:
+* Finished C++ dataset analysis code and performed the dataset analysis.
+* Wrote hashcat shell script to perform the password cracking analysis.
+* Added the results from the password cracking analysis into the report.
+* Wrote about my password cracking analysis in the report, along with other password-related information.
+* Some evaluation of resources.
+
+
+
+## 23/03/22
+Since the last entry:
+* Added a couple of images to the report (screenshots related to analysis).
+* Moved some stuff into tables for the password cracking section to make it look much better.
+* Some other small additions (a few paragraphs) to various parts of the report.
+
+
+
+## 10/04/22
+Since the last entry:
+* Wrote about password security misconceptions.
+* Moved more stuff into tables.
+* Wrote about addressing password security misconceptions.
+* Wrote about phishing, SQL injection, and man-in-the-middle attacks.
+
+
+
 ## 17/04/22
-Well, things got a bit messy in terms of my tracking of timescales for this projct, and i have not yet done my presentation due to being ill during the week it was supposed to take place, but at least i have my project 99% finished now.
+Well, things got a bit messy in terms of my tracking of timescales for this project, and i have not yet done my presentation due to being ill during the week it was supposed to take place, but at least i have my project 99% finished now.
+Since the last entry:
+* Wrote about phishing detection.
+* Wrote about mitigations for injecton and database compromise, as well as MITM attacks
+* Rearranged the vulnerabilities section, moved it before the dataset/password cracking analysis
+* Improved dataset analysis writeup.
+* Started writing the conclusion.
